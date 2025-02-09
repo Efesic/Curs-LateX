@@ -1,4 +1,4 @@
-\documentclass[15pt,twosides,onecolumn,openany]{book}
+\documentclass[12pm,twosides,onecolumn,openany]{book}
 \usepackage{graphicx} 
 \usepackage[catalan]{babel}
 \usepackage{emptypage}
@@ -22,6 +22,55 @@
 \usepackage{multicol}
 \usepackage{rotating}
 \usepackage{titlesec}
+\usepackage{tcolorbox}
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Color de fons dels listings
+\definecolor{bgcolor}{rgb}{0.94,0.94,0.94}
+
+% Colors per a interpretar LaTeX al PDF
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codeblue}{rgb}{0,0,1}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codered}{rgb}{0.8,0,0}
+
+% Configuració per a que listings entengui LaTeX
+\lstdefinelanguage{LaTeX}{
+    keywords={documentclass, usepackage, begin, end, chapter, section, subsection, textbf, textit, title, author, date, maketitle, tableofcontents, includegraphics, caption, label, ref, cite, pagestyle, thispagestyle, newpage},
+    keywordstyle=\color{codeblue}\bfseries,
+    morekeywords=[2]{include, input, newcommand, renewcommand, geometry, textcolor, footnote, emph},
+    keywordstyle=[2]\color{codered}\bfseries,
+    sensitive=true,
+    comment=[l]{\%},
+    morecomment=[s]{/*}{*/},
+    commentstyle=\color{codegray}\itshape,
+    string=[b]",
+    stringstyle=\color{codegreen}
+}
+
+% Configuración global de la font per a listings
+\lstset{
+    language=LaTeX,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{codeblue}\bfseries,
+    backgroundcolor=\color{bgcolor},
+    commentstyle=\color{codegray}\itshape,
+    stringstyle=\color{codegreen},
+    breaklines=true,
+    breakindent=0pt,
+    framexrightmargin=0.05\textwidth,
+    linewidth=0.95\textwidth,
+    frame=none,
+    captionpos=b,
+    numbers=left,
+    numbersep=5pt,
+    numberstyle=\tiny\color{gray},
+    showspaces=false,
+    showstringspaces=false,
+    tabsize=4,
+    inputencoding=utf8
+}
 
 \newenvironment{Figura}
   {\par\medskip\noindent\minipage{\linewidth}}
@@ -34,6 +83,15 @@
   {} 
   [] 
 
+% Comptador d'exemples
+\newcounter{exemple}[section] 
+\renewcommand{\theexemple}{\thechapter.\arabic{exemple}}
+\newcommand{\exemple}[1]{
+    \refstepcounter{exemple}
+    \textbf{Exemple \theexemple} #1
+}
+
+% Configuració de la capçalera
 \fancyhf{}
 \fancyhead[RO,LE]{\rightmark}
 \fancyhead[LO,RE]{\leftmark}
@@ -73,7 +131,7 @@ Benvolguts i benvolgudes a aquest text introductori de LaTeX. Som Optica't, un g
 Agraïments
 \newpage
 \pagestyle{fancy}
-\chapter{Introducció}
+\chapter{Introducció i conceptes bàsics}
 \thispagestyle{empty}
 
 Dediquem aquest capítol a explicar des de zero com funciona LaTeX i com podem començar a crear els nostres primers documents. La finalitat del capítol és que us quedeu amb els conceptes bàsics de com funciona l'eina, la seva sintaxi, els possibles errors que trobareu, etc.
@@ -117,27 +175,201 @@ A la dreta de la pantalla s'observa un visor pdf. Aquest visor permet veure per 
 Entre l'explorador i el visor tenim l'editor de text. Aquest editor és igual que qualsevol altre en programació. Allà és on escrivim totes les línies de codi necessàries per a generar el nostre document. Tot i això, aquesta finestra intermitja no sempre farà d'editor. Overleaf permet treballar amb més tipus d'arxiu que els de LateX com per exemple imatges. Per tant és més encertat pensar en l'editor com un entorn dinàmic de treball i no només com un simple editor de text.\\\\
 Es pot configurar la visibilitat tant de l'editor com del visor pdf a partir de les opciones del desplegable \texttt{Layout}. Aquestes opcions deixen només visible un dels dos, els dos o permet separar-los en finestres diferents del navegador (això és útil si per exemple treballem a doble pantalla).
 \subsection{LaTeX d'escriptori}
+Aquí va el text que redactarà Aurem :)
 \subsection{Eines alternatives}
 Per a la gent més experimentada o amb més interés en la programació deixem el següent entorn que, tot i potser semblar més complicat de fer servir, permet personalitzar completament el teu entorn de treball. LaTeX és un llenguatge, no un programa, per tant desde qualsevol editor de text podem escriure en LaTeX i, fent servir el compilador corresponent podrem generar la sortida que vulguem. Ara bé, existeixen eines que faciliten aquesta feina i ens permeten configurar el nostre entorn de forma més visual. Podriem fer una llista enorme amb eines de visualització útils i personalitzables, però una de les més populars (i des de la que s'està redactant aquest text) és Visual Studio Code. La instalació i configuració d'aquest entorn queda fora dels proposits d'aquest curs, però us convidem a informar-vos una mica sobre aquesta eina ja que no serveix només per a LaTeX. Visual Studio Code permet treballar amb LaTeX (i molts més llenguatges) en local, té integrat un explorador de directoris molt visual (no cal barallar-se amb la bash per a navegar per les carpetes) i permet afegir extensions pensades per a treballar amb LaTeX.
 \section{Estructura bàsica d'un document}
+De forma similar a un llenguatge de programació quan escrivim un document en LaTeX necessitem seguir un cert ordre i respetar una sintaxi concreta per a que el compilador pugui comprendre i traduïr correctament el nostre document. Aquestes normes que s'han de seguir no són complicades, de fet amb Overleaf són similars a escriure en Word. Com hem comentat abans, LaTeX està pensat per a que no ens haguem de preocupar per la forma sinó més per qué escrivim, per tant és aquí on hi ha la diferència principal amb altres eines d'edició de textos. 
 \subsection{Sintaxi}
-\subsection{Tipus de document}
-\subsection{Paquets}
-\subsection{Entorns}
+L'estructura d'un document de LaTeX se separa en dues parts ben diferenciades:
+\begin{itemize}
+    \item \textbf{Preàmbul}: a on escrivim la ``configuració'' del document
+    \item \textbf{Text principal}: a on escrivim el cos del document
+\end{itemize}
+Separem aquestes dues parts de forma explícita, reservant sempre les primeres línies de codi per al preàmbul i la resta per al text principal. Veiem com a exemple el codi que escriu Overleaf per defecte quan obrim un document en blanc:\\\\
+\exemple{\label{ex:\theexemple}}\footnote{Tant Overleaf com LaTeX permet fer servir accents escrits directament amb el teclat o amb codi (ho veurem més endavant). Però, l'entorn que fem servir per a escriure els exemples no els detecta correctament. Això no serà un problema per a volsaltres a l'hora de redactar un document sense aquest recurs. Si us plau, feu servir accents.}
+\begin{lstlisting}
+    \documentclass{article}
+    \usepackage{graphicx} % Required for inserting images
+
+    \title{Curs d'Introduccio a LaTeX}
+    \author{Optica't UAB}
+    \date{February 2025}
+
+    \begin{document}
+
+    \maketitle
+
+    \section{Introduction}
+
+    \end{document}
+\end{lstlisting}
+Des de la primera línia fins a la setena és el preàmbul. La resta és el text principal i comença amb el comandament \texttt{\textbackslash begin\{document\}}. 
+L'exemple \ref{ex:1.1} ens permet veure els tres tipus de comandaments bàsics del preàmbul i com s'estructura un document. El preàmbul de l'exemple comença declarant a la primera línia el tipus de document que estem redactant. Seguidament, a la segona, declara el paquet \texttt{graphicx}. Els últims tres comandaments configuren tres objectes predefinits (el títol, l'autor i la data). Veiem doncs que al preàmbul els comandaments bàsics que podem fer servir són:
+\begin{itemize}
+    \item[-] Declaració de tipus de document
+    \item[-] Declaració de paquets
+    \item[-] Configuració d'entorns pre-establerts
+\end{itemize}
+Parlarem amb més detall d'aquests comandaments a les següents seccions (\ref{sec:tipus_de_document}, \ref{sec:paquets} i \ref{sec:entorns}). La resta del document, alló que es plasmarà al compilar, es redacta en un entorn delimitat pels comandaments \texttt{\textbackslash begin\{document\}} i \texttt{\textbackslash end\{document\}}. El codi que hi ha escrit entre aquests delimitadors serveix per a imprimir al document el títol i el títol de la secció anomenada ``Introduction''. Més endavant ens interessarem per aquests comandaments. Encara més important per a aquesta part del codi és com es redacta text pla per a que s'imprimeixi com volem per pantalla. Veiem-ne alguns exemples:\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    \documentclass{article}
+
+    \begin{document}
+        Aixo s'escriu en text pla, amb una mida de font standar i amb 
+        uns marges per defecte.
+    \end{document}
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm]
+    Aixo s'escriu en text pla, amb una mida de font standar i amb uns marges per defecte.
+\end{tcolorbox}
+Com veiem el text s'escriu justificat a l'amplada del document i amb una mida de text normal. La mida i el tippus de lletra es pot modificar tant a la configuració del preàmbul com al mateix codi (veure secció \ref{sec:format_del_text_pla}). Si tenim més text aquest s'adaptarà en forma de paràgraf. Existeixen diverses formes de separar dos paràgrafs i cada forma crea un salt de línia de diferent mida i genera o no indentació per defecte.\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    \documentclass{article}
+
+    \begin{document}
+        Aquest es un text d'exemple que omplira l'amplada del document formant un unic paragraf. Podem separar-ho en altres paragrafs de diferents maneres.\\
+        Aquest paragraf esta separat per $\backslash\backslash$. S'aplica un salt de linia normal, amb una separacio igual a la d'un salt de linia del mateix paragraf i no aplica indentacio.
+
+        Deixar una linia en blanc tambe genera un altre paragraf com al escriure $\backslash\backslash$ pero a mes aplica indentacio. Si LaTeX detecta que hi ha mes d'un espai en blanc normalment avisa amb un error de sintaxi. Overleaf permet fer aquest espais en blanc i ho interpreta com a un de sol.Podem generar el mateix efecte separant el paragraf amb el comandament $\backslash$par. LaTeX quan es troba aquest comandament enten que s'ha acabat un paragraf i que lo que ve a continuacio pertany a un seguent paragraf. \par Per exemple aquest text esta separat pel comantament $\backslash$par.\\\\
+        Aquest darrer paragraf se separa amb quatre $\backslash$. Aquesta forma de separar paragrafs no genera indentacio i crea un salt de linia mes gran, fent que el text se separi en dos de forma mes visual. 
+    \end{document}
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    Aquest es un text d'exemple que omplira l'amplada del document formant un unic paragraf. Podem separar-ho en altres paragrafs de diferents maneres.\\
+    Aquest paragraf esta separat per $\backslash\backslash$. S'aplica un salt de linia normal, amb una separacio igual a la d'un salt de linia del mateix paragraf i no aplica indentacio.
+
+    Deixar una linia en blanc tambe genera un altre paragraf com al escriure $\backslash\backslash$ pero a mes aplica indentacio. Si LaTeX detecta que hi ha mes d'un espai en blanc normalment avisa amb un error de sintaxi. Overleaf permet fer aquest espais en blanc i ho interpreta com a un de sol.Podem generar el mateix efecte separant el paragraf amb el comandament $\backslash$par. LaTeX quan es troba aquest comandament enten que s'ha acabat un paragraf i que lo que ve a continuacio pertany a un seguent paragraf. \par Per exemple aquest text esta separat pel comantament $\backslash$par.\\\\
+    Aquest darrer paragraf se separa amb quatre $\backslash$. Aquesta forma de separar paragrafs no genera indentacio i crea un salt de linia mes gran, fent que el text se separi en dos de forma mes visual. 
+\end{tcolorbox}
+
+El detall de com escriure $\backslash$ dins del codi per a que s'imprimeixi correctament ho explicarem més endavant. A l'exemple \ref{ex:1.3} podem veure quatre formes de separar paràgrafs. L'ús d'un salt o altre ve a gust de qui està redactant el document. En aquest text, per exemple, normalment separem els paragrafs amb $\backslash\backslash\backslash\backslash$ per a obtenir un efecte visual més polit. La separació de paràgrafs de vegades ve condicionada pel que té el paràgraf al seu voltant, usualment pel codi just a sobre d'ell\footnote{Això ho veureu a mesura que escriviu documents en LaTeX, lo més usual és veure-ho quan es comença un paràgraf després de posar una figura o una taula. Per exemple, al finalitzar l'exemple \ref{ex:1.3} comença un paràgraf amb indentació automàtica.}. En cas de voler afegir o treure una indentació desitjada o no podem fer servir el comandament $\backslash$\texttt{indent} o $\backslash$\texttt{noindent}.\\\\
+La indentació a LaTeX pot portar una mica de confusió no només amb el que s'imprimeix en pantalla al genrar el resultat, sinó també amb la indentació dins del propi codi. L'estructura del codi que escrivim ve imposada pel fet que hem de fer entendre al compilador què volem que surti exactament. Però, per a poder facilitar la nostra lectura del codi podem fer servir una jerarquia amb la indentació dins del codi. Fixem-nos novament en l'exemple \ref{ex:1.3}, el text que s'acabarà imprimint al document es troba indentat respecte als delimitadors del document (el \texttt{begin} i el \texttt{end}). Podriem escriure aquest codi sense aplicar aquesta indentació i el resultat per pantalla acabaria sent el mateix que abans. Aquesta indentació global el compilador la ignora, però a nosaltres ens és útil per a saber que aquella part del codi pertany al document. En cas de ternir més entorns a dins del codi (com veurem a la secció \ref{sec:entorns}) podem aprofitar aquesta indentació per a poder escriure un codi més polit que pugui ser fàcilment entés tant pel compilador com per a qui escriu o revisa el codi.
+\subsubsection{Paraules reservades i comandaments}
+Com heu pogut observar als exemples que hem posat fins ara hi ha algunes paraules que les hem posat en color blau. Semblant a un llenguatge de programació, LaTeX té un conjunt de paraules i simbols reservats per a que el compilador entengui si estem escrivint text pla o si estem donant una ordre concreta. Els comandaments (ja siguin del preàmbul o a dins del text o entorns matemàtics) venen declarats començant pel símbol ``$\backslash$''\footnote{És per aquest motiu que no hem escrit directament el símbol al codi per a que s'imprimeixi en la sortida del document, ja que LaTeX ho interpretaria com a un comandament i no com a un símbol}. Entorns visuals com Overleaf faciliten la tasca de saber quines són aquestes paraules reservades canviant el seu color al codi o fins i tot fent prediccions del codi que volem escriure.\\\\
+No és viable aprendre de forma activa quines són aquestes paraules (no recomenem provar-ho, és una tasca molt farragosa). Lo més útil és practicar i amb el temps acostumar-se a la forma intuituva que té LaTeX de seleccionar aquestes paraules, ja que normalment són instruccions literals en anglès. Al llarg del curs explicarem algunes d'aquestes paraules reservades i a l'Annex deixarem algunes taules amb exemples útils que podeu fer servir al vostre dia a dia.\\\\
+A més, veureu que acompanyant a aquestes paraules reservades normalment apareixen \{ \} o [ ]. Entre claus normalment s'escriu l'argument de la funció que estiguem cridant amb la paraula reservada. Entre claudators normalment s'escriuen les opcions de configuració de la funció.
+\subsection{Tipus de document}\label{sec:tipus_de_document}
+Fixem-nos ara en la primera línia del preàmbul. Com hem dit aquest comandament declara quin tipus de document estem escrivint. Segons com configurem aquesta línia, el text que redactem sortirà amb una configuració predefinida o altre. Aquesta configuració és molt bàsica, però pot portar a problemes que semblen que no tenen solució si no es té en compte qué hem configurat i que no. Existeixen molts tipus de documents que enten LaTeX, comentem per sobre els més comuns:
+\begin{itemize}
+    \item \textbf{\texttt{article}} - Aquest és el tipus de document que normalment fareu servir a la carrera. Està pensat per a escriure documents científics curts, de forma que permet estructurar el text en seccions.
+    \item \textbf{\texttt{report}} - En cas de necessitar fer un article més llarg podeu fer servir aquest tipus de document. Un \texttt{report} permet a més de seccions separar el text en capítols.
+    \item \textbf{\texttt{book}} - Aquest és el tipus de document que fem servir per a redactar aquest curs. Treballa de forma similar a un report (és un text llarg i amb capítols) pero afegeix detalls necessaris per a estructurar un llibre. Un exemple molt clar d'això és que de forma automàtica genera l'espai en blanc adient per a que els capítols començin en una pàgina imparella.
+    \item \textbf{\texttt{letter}} - En cas de voler escriure una carta amb una estructura formal podeu fer servir aquesta classe de document. \texttt{letter} permet declarar al preàmbul algunes variables predefinides (com la signatura o l'acomiadament) que serveixen per a estructurar la carta de forma molt senzilla.
+    \item \textbf{\texttt{beamer}} - Aquest darrer format serveix per a crear presentacions. És una classe de document molt personalitzable, però és més complicada de fer servir i això la fa una mica limitada per a la gent que comença a fer servir LaTeX.
+\end{itemize}
+
+Cada classe de document es pot configurar com més ens convingui. L'estructura del comandament sencer és $\backslash$\texttt{documentclass[...]\{\textit{class}\}} on entre claudators podem escriure la configuració i entre claus la classe de document que vulguem. Les configuracions poden ser molt variades i es pot posar més d'una entre els claudators sempre que les separem per comes. Deixem algunes configuracions comunes amb una breu explicació i alguns exemples:
+\begin{itemize}
+    \item Es pot modificar la mida de la lletra del text pla general posant \texttt{10pm}, \texttt{11pm}, \texttt{12pm}, etc. La unitat de mesura \texttt{pm} s'anomena punt i correspon a aproximadament 0,35$\,$mm al paper.
+    \item Podem configurar la mida del paper segons desitjem. Per defecte en un document \texttt{book} la mida és A4, però en altres pot variar. Podem explicitar diferents mides com \texttt{a4paper} (mida A4), \texttt{letterpaper} (mida de carta, 216 $\times$ 279$\,$mm), \texttt{b5paper} (format B5, 176 $\times$ 250$\,$mm), etc. 
+    \item Configurem el format d'impressió a una o doble cara, amb els comandaments \texttt{oneside} i \texttt{twoside} respectivament. Aquesta configuració canvia per exemple quan comença un capítol, si a la següent pàgina o a la següent pàgina imparella. Cada configuració està pensada per a que es pugui enquadernar a una o a dues cares.
+    \item Configurem la distribució del text ja sigui a una o a doble columna\footnote{Això configura el text de forma general, tot el text s'estructurarà en una a dues columnes. Per a obtenir una millor personalització de la doble columna farem servir altres comandaments (veure secció \ref{sec:multiples_columnes}).} amb els comandaments \texttt{onecolumn} per a una columna i \texttt{twocolumn} per a dues.
+    \item Podem escollir si els capítols comencen a qualsevol pàgina (\texttt{openany}) o a les pàgines imparelles (\texttt{openright}).
+\end{itemize}
+\exemple{\label{ex:\theexemple}} \textbf{Article en format A4 amb lletra de mida 10pm:}
+\begin{lstlisting}
+    \documentclass[10pm]{article}
+\end{lstlisting}
+\exemple{\label{ex:\theexemple}} \textbf{Report mida A4, a dues columnes, lletra mida 12pm i a una cara:}
+\begin{lstlisting}
+    \documentclass[a4paper,12pm,oneside,twocolumn]{report}
+\end{lstlisting} 
+\exemple{\label{ex:\theexemple}} \textbf{Configuració d'aquest document:}
+\begin{lstlisting}
+    \documentclass[12pm,twosides,onecolumn,openany]{book}
+\end{lstlisting}
+
+Veiem a l'exemple \ref{ex:1.6} que hem aplicat \texttt{openany} i no hem explicitat \texttt{a4paper} (no és necessari, \texttt{book} ho té onfigurat per defecte). Això es deu a que aquest document està escrit per a llegir-se en format digital i no en paper. La versió en paper d'aquest document no hauria d'escriure l'opció \texttt{openany} i deixar per defecte \texttt{openright} (es podria escriure explícitament, però \texttt{book} té aquesta darrera opció per defecte).
+\subsection{Paquets}\label{sec:paquets}
+Com hem dit existeixen molts comandaments que podem escriure a partir de paraules reservades. Amb aquests comandaments podem, com si fos un llenguatge de programació, configurar funcions que ens modifiquen el que imprimim per defecte en un document escrit en LateX. Però, aquesta tasca és molt farragosa, ja que per a fer servir eines molt comunes hauriem de saber la configuració exacta de cada detall que necessitem escriure. És per això que, novament com als llenguatges de programació, existeixen els paquets. Aquests paquets són codi en LaTeX escrit per a configurar diverses funcions que necessitem per a redactar, hi ha molts i de molt diferents. Alguns venen per defecte amb LaTeX i altres venen per part de la comunitat. El funcionament de cada paquet és molt diferent a cada un, fins i tot podem trobar alguns obsolets o incompatibles entre ells. Però, de forma senzilla podem explicar el seu funcionament dient que són comandaments que indiquen a LaTeX que existeixen noves paraules reservades preconfigurades.\\\\
+Per a poder fer servir un paquet hem de cridar-lo explícitament al preàmbul amb el comandament $\backslash$\texttt{usepackage\{...\}}, just després de declarar el tipus de document. Podeu trobar paquets molt interessants buscant per internet, us deixem un breu llistat amb alguns exemples:
+\begin{itemize}
+    \item $\backslash$\texttt{usepackage[a4paper]\{geometry\}} - Aquest paquet és útil per a configurar els marges del document, aquest exemple adapta els d'un de mida A4.
+    \item $\backslash$\texttt{usepackage\{caption\}} - Permet configurar la lletra dels títols de taula i peus de figura.
+    \item $\backslash$\texttt{usepackage\{fancyhdr\}} - Serveix per a configurar la capçalera i els peus de pàgina.
+    \item $\backslash$\texttt{usepackage\{mhchem\}} - Permet escriure més fàcilment fòrmules i reaccions químiques.
+\end{itemize}
+
+Fent referència a l'explicació simplificada de lo que és un paquet podem veure l'exemple de \texttt{mhchem}. Aquest paquet indica a LaTeX que existeix una nova paraula reservada assignada al comandament ``$\backslash$\texttt{ce}\{...\}'' la qual amb els arguments adients ens permet escriure fòrmules o reaccions químiques més fàcilment.\\\\
+Un detall important a l'hora d'utilitzar paquets és que no tots es troben insta\lgem ats per defecte a LaTeX. Això depèn molt de l'entorn on es treballi, pot variar fins i tot segons la versió o la distribució que us hagueu insta\lgem at en local. Overleaf té l'avantatge que la majoria de paquets útils ja venen insta\lgem ats i no us haureu de preocupar per això\footnote{Per exemple, \texttt{mhchem} es pot fer servir a Overleaf sense cap problema, però en local s'ha d'insta\lgem ar prèviament.}. La resta d'usuaris que no feu servir Overleaf haureu d'insta\lgem ar els paquets que no tingueu per defecte segons quin entorn estigueu fent servir, ja sigui des de la web dels creadors del paquet o directament llençant un comandament des de la bash en Windows o Linux.\\\\
+El funcionament de cada paquet es pot trobar a internet, normalment es pot trobar a la bibliografia oficial del paquet o es pot demanar ajuda a eines d'inte\lgem igència artificial per a que us donin alguna breu explicació. En aquest curs farem servir i explicarem com funcionen diversos paquets comuns o útils.
+\subsection{Entorns}\label{sec:entorns}
+Posem novament enfasi a les paraules reservades. Com hem dit anteriorment el codi que s'acabarà imprimint al document es troba entre els delimitadors $\backslash$\texttt{begin\{document\}} i $\backslash$\texttt{end\{document\}}. Les paraules clau \texttt{begin} i\texttt{end} són dues paraules reservades molt comunes en un codi de LaTeX, ja que obren i tanquen entorns específics dins del codi. Els arguments que accepten aquests delimitadors poden ser molt diversos, de fet podem obtenir nous arguments afegint paquets. L'ús de delimitadors per a construïr entorns és molt útil tant per a accedir a les funcions que necessitem per a escriure el nostre text com per a seguir una jerarquia al codi (com vam dir al parlar de la sintaxi). Ja sigui indentat o no, el codi que es troba entre els delimitadors constitueix un bloc aïllat de la resta del codi. Qualsevol comandament (llevat d'aquells que actuen globalment) que escrivim dins de l'entorn delimitat només afectarà al codi que hi hagi dins.\\\\ 
+Exemples d'entorns propis de LaTeX són l'entorn matemàtic (parlem més profundament al capítol \ref{cap:entorn_matematic}), \texttt{equation}; l'entorn de justificació central, \texttt{center}; l'entorn de justificació cap a la dreta, \texttt{flushright}; l'entorn de les figures, \texttt{figure}; etc. Exemples d'entorns  d'alguns paquets són: ambl el paquet \texttt{subcaption} l'entorn de les subfigures, \texttt{subfigure}; amb el paquet \texttt{tcolorbox} l'entorn d'un quadre de text amb marcs i fons configurable, \texttt{tcolorbox}; amb el paquet \texttt{listings}  l'entorn que permet escriure amb diferent format que el text normal codi en altre llenguatge de programació, \texttt{lstlisting}, etc. Aquests últims exemples necessiten primer una configuració extra al preàmbul, per tant són una mica més avançats que la resta d'entorns que venen per defecte amb LaTeX. Podeu veure com es fan servir aquests entorns al següent exemple:\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    \documentclass{article}
+    
+    \usepackage{subcaption}
+    \usepackage{listings}
+    \usepackage{tcolorbox}
+
+    \begin{document}
+        Aquest text esta justificat per defecte ja que no es troba dins de cap entorn, nomes es troba dins del document.\\
+
+        \begin{center}
+            El text que es troba aqui esta justificat al centre. S'observa com per a poder veure millor el codi fem servir indentacio, pero com hem dit el compilador omet aquesta indentacio global. Tambe es veu com separem en paragrafs. La combinacio d'espai en blanc i $\backslash\backslash$ es equivalent a quatre $\backslash$.
+        \end{center}
+
+        \noindent Parlarem mes endavant, pero podeu veure un exemple matematic:
+
+        \begin{equation*}
+            a^2 + b^2 = c^2
+        \end{equation*}
+
+        \begin{flushright}
+            Podem tambe escriure text justificat cap a la dreta. Qualsevol objecte dins d'aquet entorn que no tingui una justificacio fixa es justificara cap a la dreta juntament amb el text. Un exemple d'aixo pot ser una imatge.
+        \end{flushright}
+
+        \begin{tcolorbox}[colframe=red, colback=black!5!white, sharp corners, width=0.85\textwidth,boxrule=0.2mm,parbox=false]
+            Aquest text te justificacio per defecte pero envoltat per una caixa. La configuracio explicita dels colors i la mida es troba entre claudators. La configuracio implicita es troba en el preambul del document del curs, parlarem mes endavant d'allo.
+        \end{tcolorbox}
+    \end{document}
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    Aquest text esta justificat per defecte ja que no es troba dins de cap entorn, nomes es troba dins del document.\\
+
+    \begin{center}
+        El text que es troba aqui esta justificat al centre. S'observa com per a poder veure millor el codi fem servir indentacio, pero com hem dit el compilador omet aquesta indentacio global. Tambe es veu com separem en paragrafs. La combinacio d'espai en blanc i $\backslash\backslash$ es equivalent a quatre $\backslash$.
+    \end{center}
+
+    \noindent Parlarem mes endavant, pero podeu veure un exemple matematic:
+
+    \begin{equation*}
+        a^2 + b^2 = c^2
+    \end{equation*}
+
+    \begin{flushright}
+        Podem tambe escriure text justificat cap a la dreta. Qualsevol objecte dins d'aquet entorn que no tingui una justificacio fixa es justificara cap a la dreta juntament amb el text. Un exemple d'aixo pot ser una imatge.
+    \end{flushright}
+
+    \begin{tcolorbox}[colframe=red, colback=black!5!white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+        Aquest text te justificacio per defecte pero envoltat per una caixa. La configuracio explicita dels colors i la mida es troba entre claudators. La configuracio implicita es troba en el preambul del document del curs, parlarem mes endavant d'allo.
+    \end{tcolorbox}
+\end{tcolorbox}
+
+Veiem a l'exemple \ref{ex:1.7} com fem sesrvir alguns dels entorns que hem emncionat abans. Els detalls del funcionament de cada un ho veure deprés, de moment quedeu-vos amb com es treballa amb els entorns.\\\\
+Aquesta forma de treballar és essencial, ja que ens permet fer servir comandaments locals que afecten a tot el codi que es trobi dins d'un entorn. Per exemple, existeix el comandament \texttt{centering}. Aquest és un comandament local, que afecta a tot el seu entorn fins a trobar uns delimitadors (si no hi ha un entorn escrit, els delimitadors són els del mateix \texttt{document}). El comandament \texttt{centering} justifica al centre el tot a tot alló que es trobi en el seu entorn. Si és text lo que hi ha dins d'aquest entorn, \texttt{centering} funciona igual que l'entorn \texttt{center}.
 
 \chapter{Format de text i estructura}
 \thispagestyle{empty}
-\section{Format del text pla}
+\section{Format del text pla}\label{sec:format_del_text_pla}
 \section{Justificació i espaiat del text}
 \section{Llistes}
-\section{Múltiples columnes}
+\section{Múltiples columnes}\label{sec:multiples_columnes}
 \section{Estructura per a un document científic}
 \subsection{Pàgina de títol i índex}
 \subsection{Capítols, seccions i subseccions}\label{sec:cap_sec_subsec}
 \subsection{Footnotes i etiquetes}
 \subsection{Colorboxes}
 
-\chapter{L'entorn matemàtic}
+\chapter{L'entorn matemàtic}\label{cap:entorn_matematic}
 \section{Formes de cridar un entorn matemàtic}
 \section{Sintaxi de l'entorn matemàtic}
 \subsection{Operacions bàsiques}
