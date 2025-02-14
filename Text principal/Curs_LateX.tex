@@ -37,7 +37,7 @@
 
 % Configuració per a que listings entengui LaTeX
 \lstdefinelanguage{LaTeX}{
-    keywords={documentclass, usepackage, begin, end, chapter, section, subsection, textbf, textit, title, author, date, maketitle, tableofcontents, includegraphics, caption, label, ref, cite, pagestyle, thispagestyle, newpage},
+    keywords={documentclass, usepackage, begin, end, chapter, section, subsection, textbf, textit, title, author, date, maketitle, tableofcontents, includegraphics, caption, label, ref, cite, pagestyle, thispagestyle, newpage, texttt, textsc, textsf},
     keywordstyle=\color{codeblue}\bfseries,
     morekeywords=[2]{include, input, newcommand, renewcommand, geometry, textcolor, footnote, emph},
     keywordstyle=[2]\color{codered}\bfseries,
@@ -358,9 +358,66 @@ Veiem a l'exemple \ref{ex:1.7} com fem sesrvir alguns dels entorns que hem emnci
 Aquesta forma de treballar és essencial, ja que ens permet fer servir comandaments locals que afecten a tot el codi que es trobi dins d'un entorn. Per exemple, existeix el comandament \texttt{centering}. Aquest és un comandament local, que afecta a tot el seu entorn fins a trobar uns delimitadors (si no hi ha un entorn escrit, els delimitadors són els del mateix \texttt{document}). El comandament \texttt{centering} justifica al centre el tot a tot alló que es trobi en el seu entorn. Si és text lo que hi ha dins d'aquest entorn, \texttt{centering} funciona igual que l'entorn \texttt{center}.
 
 \chapter{Format de text i estructura}
+Aquest capítol del curs el dedicarem a aprendre a construir documents de LaTeX amb les eines més senzilles d'edició del format del text que en permet LaTeX pur. Veureu que els diferents apartats són, bàsicament, una recopilació dels comandamens més comuns que es fans servir per a redactar la majoria de textos científics amb aquesta eina.
 \thispagestyle{empty}
 \section{Format del text pla}\label{sec:format_del_text_pla}
+Al capítol anterior hem vist com funciona la sintaxi del text pla, com podem separar-lo per paràgrafs i com fer servir paquets i entorns útils que ens són de molta utilitat per a poder redactar documents interessants. Ara parlarem de certs comandaments, també molt bàsics, que permeten configurar el tipus de lletra que fem servir.\\\\
+Hi ha molts comandaments, ja siguin integrats a LaTeX o que provenen de paquets que ens modifiquen la font del text pla que redactem. Tots aquests comandaments funcionen de la mateixa forma: el text afectat ha de ser l'argument del comandament. Podem fer una breu classificació d'aquests comandaments amb alguns exemples que us deuxem a continuació.
+\subsubsection{Modificacions comunes}
+\begin{center}
+    $\backslash$\texttt{textbf}\{Text en negreta\} \textbf{Text en negreta} \hspace{1.5cm} $\backslash$\texttt{textit}\{Text en cursiva\} \textit{Text en cursiva}\\ \vspace{5mm}
+    $\backslash$\texttt{underline}\{Text subratllat\} \underline{Text subratllat}
+\end{center}
+\subsubsection{Tipus de font}
+\begin{center}
+    $\backslash$\texttt{text}\{Text normal\}\footnote{Aquest comandament i un altre ens serà útil en entorns matemàtics. Per escriure text pla normal no cal fer-lo servir.} \text{Text normal} \hspace{1.5cm} $\backslash$\texttt{textsf}\{Text en Sans Serif\} \textsf{Text en Sans Serif}\\ \vspace{5mm}
+    $\backslash$\texttt{texttt}\{Text mecanografiat\} \texttt{Text mecanografiat} \\ \vspace{0.5cm} $\backslash$\texttt{textsc}\{Text en majúscules petites\} \textsc{Text en majúscules petites}
+\end{center}
+Per a fer canvis en la mida de la lletra fem servir uns comandaments locals que afecten tot l'entorn on treballem. Tan com si escribim en un entorn concret d'alguna funció com si escrivim text pla podem delimitar la part del codi a la que afecten aquests comandaments fent servir claus com a delimitadors. Un exemple general (i inventat) d'aquesta sintaxi per als comandaments locals és: 
+\begin{center}
+    \{$\backslash$\texttt{comandament} Aquest text està afectat pel comandament exemple\}.
+\end{center}
+Posem a continuació alguns exemples de mida de lletra.
+\subsubsection{Mida de lletra}
+\begin{center}
+    \{$\backslash$\texttt{tiny} Text tiny\} {\tiny Text tiny} \hspace{1cm} \{$\backslash$\texttt{footnotesize} Text de footnote\} {\footnotesize Text de footnote} \\ \vspace{5mm}  \{$\backslash$\texttt{large} Text large\} {\large Text large} \hspace{1cm}  \{$\backslash$\texttt{huge} Text huge\} {\huge Text huge}
+\end{center}
+Podeu trobar més exemples i el llistat complet de mides a l'Annex. Naturalment aquestes modificacions de les fonts es poden convinar convenientment, deixem també alguns exemples.\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    \documentclass{article}
+
+    \begin{document}
+        \texttt{\LARGE Text mecanografiat i de mida LARGE}\\\\
+        \textsc{\textit{Text amb majuscules i en cursiva}}\\\\
+        \textsf{\textbf{\footnotesize Text en Sans Serif en negreta i de mida footnotesize}}
+    \end{document}
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    \texttt{\LARGE Text mecanografiat i de mida LARGE}\\\\
+        \underline{\textit{Text subratllat i en cursiva}}\\\\
+        \textsf{\textbf{\footnotesize Text en Sans Serif en negreta i de mida footnotesize}}
+\end{tcolorbox}
+Però, s'ha d'anar amb cura ja que existeixen alguns comandaments incompatibles entre ells. Normalment quan això passa LaTeX avisa com un error de sintaxi. El document normalment compilarà, però escollirà de forma jeràrquica quin comandament afectarà a la lletra o quin no. Posem'ne un exemple:\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    \documentclas{article}
+
+    \begin{document}
+        \textsc{\textit{\footnotesize Text en cursiva i en majuscules petites}}\\\\
+        \textit{\textsc{\Large Text en majuscules petites i en cursiva}}
+    \end{document}
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    \textsc{\textit{\footnotesize Text en cursiva i en majuscules petites}}\\\\
+    \textit{\textsc{\Large Text en majuscules petites i en cursiva}}
+\end{tcolorbox}
+Veiem que els comandaments $\backslash$\texttt{textit} i $\backslash$\texttt{textsc} són incompatibles. La jerarquia que se segueix al codi és de dins cap a fora, és a dir, domina el primer comandament que selecciona el text amb les claus. La resta de comandaments per sobre són secundaris i afecten després a no ser que siguin incompatibles. A l'exemple \ref{ex:2.2} com a la primera línia primer apliquem cursiva i després per sobre apliquem el text en majúscules només obtenim la lletra en cursiva. A la segona línia la situació és a la inversa i només obtenim la lletra en majúscules petites. Veiem també com un comandament local com és el canvi de mida no és incompatible amb els altres dos, encara funciona tot i haver-hi un error de sintaxi.
 \section{Justificació i espaiat del text}
+De forma similar amb la font de la lletra, podem modificar la justificació i espaiat del text amb comandaments amb argument o amb comandaments locals. També veurem un nou tipus de comandament que és de tipus local, només que el seu efecte és encara més localitzat ja que només afecta al lloc on hem posicionat el comandament al codi.\\\\
+Si no apliquem cap entorn o configuració extra al preàmbul el text pla normalment està justificat a tota l'amplada de línia\footnote{Notem que és a l'amplada de línia i no l'amplada dels marges definit al pràmbul. Aquest detall no és rellevant si treballem a una columna, però veurem que si que s'ha de tenir en compte quan treballem amb més d'una columna (veure secció \ref{sec:multiples_columnes})}. Com hem vist a l'exemple \ref{ex:1.7} podem canviar aquesta justificació amb entorns com \texttt{flushright} o \texttt{center}. El primer justifica tot el text al marge dret, el segon justifica el text al centre. Anàlogament a \texttt{flushright} podem fer servir \texttt{flushleft} per a justificar el text al marge esquerra (aquesta és la configuració per defecte en editors de text com Word). Podem fer servir aquests entorns de forma localitzada amb els seus anàlegs de comandaments locals, respectivament, $\backslash$\texttt{flushright}, $\backslash$\texttt{centering}, $\backslash$\texttt{flushleft}. Escollir si hem de treballar amb els comandaments d'entorn o locals depen tant del nostre flux de treball com de la compatibilitat amb altres comandaments que estiguem utilitzant. Com a petita guia podeu fer servir el següent flux de treball: fem servir comandaments d'entorn per a delimitar paràgrafs de text, i per a treballar amb objectes que no siguin text fem servir comandaments locals 
 \section{Llistes}
 \section{Múltiples columnes}\label{sec:multiples_columnes}
 \section{Estructura per a un document científic}
