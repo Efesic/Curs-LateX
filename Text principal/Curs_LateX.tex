@@ -84,7 +84,7 @@
   [] 
 
 % Comptador d'exemples
-\newcounter{exemple}[section] 
+\newcounter{exemple}[chapter] 
 \renewcommand{\theexemple}{\thechapter.\arabic{exemple}}
 \newcommand{\exemple}[1]{
     \refstepcounter{exemple}
@@ -331,7 +331,7 @@ Exemples d'entorns propis de LaTeX són l'entorn matemàtic (parlem més profund
         \end{tcolorbox}
     \end{document}
 \end{lstlisting}
-\textbf{Sortida:}
+\textbf{Sortida\footnote{Un detall que no és rellevant però que si que podreu notar en cas d'haver compilat aquest mateix codi o de similars és que LaTeX ens avisa que tenim un paquet carregat però que no fem servir, el paquet \texttt{subcaption}. Als exemples no mostrarem aquests avisos, ja que seria ficar-nos a explicar algunes sortides poc rellevants del log de LaTeX i al cap i a la fi no acaba afectant al document final. Aquesta notificació es marca com a error de sintaxi, però el compilador igualment genera el codi resultant ignorant l'error.}:}
 \begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
     Aquest text esta justificat per defecte ja que no es troba dins de cap entorn, nomes es troba dins del document.\\
 
@@ -354,7 +354,7 @@ Exemples d'entorns propis de LaTeX són l'entorn matemàtic (parlem més profund
     \end{tcolorbox}
 \end{tcolorbox}
 
-Veiem a l'exemple \ref{ex:1.7} com fem sesrvir alguns dels entorns que hem emncionat abans. Els detalls del funcionament de cada un ho veure deprés, de moment quedeu-vos amb com es treballa amb els entorns.\\\\
+Veiem a l'exemple \ref{ex:1.7} com fem servir alguns dels entorns que hem mencionat abans. Els detalls del funcionament de cada un ho veurem deprés, de moment quedeu-vos amb com es treballa amb els entorns.\\\\
 Aquesta forma de treballar és essencial, ja que ens permet fer servir comandaments locals que afecten a tot el codi que es trobi dins d'un entorn. Per exemple, existeix el comandament \texttt{centering}. Aquest és un comandament local, que afecta a tot el seu entorn fins a trobar uns delimitadors (si no hi ha un entorn escrit, els delimitadors són els del mateix \texttt{document}). El comandament \texttt{centering} justifica al centre el tot a tot alló que es trobi en el seu entorn. Si és text lo que hi ha dins d'aquest entorn, \texttt{centering} funciona igual que l'entorn \texttt{center}.
 
 \chapter{Format de text i estructura}
@@ -417,14 +417,181 @@ Però, s'ha d'anar amb cura ja que existeixen alguns comandaments incompatibles 
 Veiem que els comandaments $\backslash$\texttt{textit} i $\backslash$\texttt{textsc} són incompatibles. La jerarquia que se segueix al codi és de dins cap a fora, és a dir, domina el primer comandament que selecciona el text amb les claus. La resta de comandaments per sobre són secundaris i afecten després a no ser que siguin incompatibles. A l'exemple \ref{ex:2.2} com a la primera línia primer apliquem cursiva i després per sobre apliquem el text en majúscules només obtenim la lletra en cursiva. A la segona línia la situació és a la inversa i només obtenim la lletra en majúscules petites. Veiem també com un comandament local com és el canvi de mida no és incompatible amb els altres dos, encara funciona tot i haver-hi un error de sintaxi.
 \section{Justificació i espaiat del text}
 De forma similar amb la font de la lletra, podem modificar la justificació i espaiat del text amb comandaments amb argument o amb comandaments locals. També veurem un nou tipus de comandament que és de tipus local, només que el seu efecte és encara més localitzat ja que només afecta al lloc on hem posicionat el comandament al codi.\\\\
-Si no apliquem cap entorn o configuració extra al preàmbul el text pla normalment està justificat a tota l'amplada de línia\footnote{Notem que és a l'amplada de línia i no l'amplada dels marges definit al pràmbul. Aquest detall no és rellevant si treballem a una columna, però veurem que si que s'ha de tenir en compte quan treballem amb més d'una columna (veure secció \ref{sec:multiples_columnes})}. Com hem vist a l'exemple \ref{ex:1.7} podem canviar aquesta justificació amb entorns com \texttt{flushright} o \texttt{center}. El primer justifica tot el text al marge dret, el segon justifica el text al centre. Anàlogament a \texttt{flushright} podem fer servir \texttt{flushleft} per a justificar el text al marge esquerra (aquesta és la configuració per defecte en editors de text com Word). Podem fer servir aquests entorns de forma localitzada amb els seus anàlegs de comandaments locals, respectivament, $\backslash$\texttt{flushright}, $\backslash$\texttt{centering}, $\backslash$\texttt{flushleft}. Escollir si hem de treballar amb els comandaments d'entorn o locals depen tant del nostre flux de treball com de la compatibilitat amb altres comandaments que estiguem utilitzant. Com a petita guia podeu fer servir el següent flux de treball: fem servir comandaments d'entorn per a delimitar paràgrafs de text, i per a treballar amb objectes que no siguin text fem servir comandaments locals 
+Si no apliquem cap entorn o configuració extra al preàmbul el text pla normalment està justificat a tota l'amplada de línia\footnote{Notem que és a l'amplada de línia i no l'amplada dels marges definit al pràmbul. Aquest detall no és rellevant si treballem a una columna, però veurem que si que s'ha de tenir en compte quan treballem amb més d'una columna (veure secció \ref{sec:multiples_columnes})}. Com hem vist a l'exemple \ref{ex:1.7} podem canviar aquesta justificació amb entorns com \texttt{flushright} o \texttt{center}. El primer justifica tot el text al marge dret, el segon justifica el text al centre. Anàlogament a \texttt{flushright} podem fer servir \texttt{flushleft} per a justificar el text al marge esquerra (aquesta és la configuració per defecte en editors de text com Word). Podem fer servir aquests entorns de forma localitzada amb els seus anàlegs de comandaments locals, respectivament, $\backslash$\texttt{flushright}, $\backslash$\texttt{centering}, $\backslash$\texttt{flushleft}. Escollir si hem de treballar amb els comandaments d'entorn o locals depen tant del nostre flux de treball com de la compatibilitat amb altres comandaments que estiguem utilitzant. Com a petita guia podeu fer servir el següent flux de treball: fem servir comandaments d'entorn per a delimitar paràgrafs de text, però, per a treballar amb objectes que no siguin text fem servir comandaments locals sota els entorns adequats.\\\\
+A part de poder configurar la justificació del text també podem canviar algunes distàncies concretes deixant espais en blanc amb una mesura precisa. Això ho aconseguim amb comandaments com $\backslash$\texttt{hspace}\{...\} o $\backslash$\texttt{vspace}\{...\}. Aquest comandaments, com hem dit abans, funcionen de forma local i justament a la part del codi on els co\lgem oquem. El primer genera un espai en blanc horitzontal, el segon fa el mateix però en vertical. L'argument de cada un d'aquests comandaments accepta la distància que ocuparà en el document aquest espai en blanc. Aquesta distància es pot posar amb diverses unitats, ja siguin centímetres, mi\lgem ímetres, punts, etc. S'ha de tenir cura, però, ja que un mal ús de qualsevol dels dos comandaments ens pot fer obtenir resultats no desitjats.\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    \documentclass{article}
+
+    \begin{document}
+    Aquest text es troba justificat de forma usual, sense estar dins de cap entorn. \hspace{2cm} Aquesta altra part tambe te una justificacio normal pero li afecta un espai en blanc de 2 cm.\\ \vspace{1cm}
+
+    Aquest salt de linia hauria d'apareixer amb un salt de linia igual al del text, pero, es veu afectat per l'espai en blanc d'1 cm.\\\\
+    Tot i que no sigui d'us comu, tambe es poden afegir arguments amb distancia negativa, es a dir apropant els objectes que venene separats pel comandament que fem servir:
+
+    \begin{center}
+        Text exemple a l'esquerra \hspace{-0.5cm} Text exemple a la dreta
+    \end{center}
+    \end{document}
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    Aquest text es troba justificat de forma usual, sense estar dins de cap entorn. \hspace{2cm} Aquesta altra part tambe te una justificacio normal pero li afecta un espai en blanc de 2 cm.\\ \vspace{1cm}
+
+    Aquest salt de linia hauria d'apareixer amb un salt de linia lleugerament mes gran que l'espai d'interliniat, pero, es veu afectat per l'espai en blanc d'1 cm i apareix mes gran de lo normal.\\\\
+    Tot i que no sigui d'us comu, també es poden afegir arguments amb distancia negativa, es a dir apropant els objectes que venene separats pel comandament que fem servir:
+
+    \begin{center}
+        Text exemple a l'esquerra \hspace{-0.5cm} Text exemple a la dreta
+    \end{center}
+\end{tcolorbox}
+Observem en aquest exemple \ref{ex:2.1} com aquest espaiat pot oferir-nos molt de joc en cas de voler co\lgem ocar text o objectes allà on volguem. Veurem més endavant (capítol \ref{cap:entorn_matematic}) com existeixen més formes d'aplicar espaiat horitzontal amb mesures ja predefinides per la mida del text.\\\\
+Un primer exemple de resultats no desitjats que hem mencionat abans és que amb l'espaiat horitzontal pot passar que una part del text o l'objecte que hi hagi a prop se surti dels marges o de la pàgina del document, quedant tallats i amb un error de sintaxi a LaTeX\footnote{Aquest error no és crític, el compilador de LaTeX només ens avisa de que és un possible error i ens aconsella corregir-lo, però, no deixarà de compilar el que nosaltres li estiguem enviant.}. Un segon exemple, ara amb l'espaiat vertical, és que l'entorn on intentem cridar aquest espai en blanc sigui o bé un entorn directament incompatible amb aquest comandament o bé que aplicant-ho trenquem l'estructura lògica (o sintaxi) de la resta de paràgrafs. En aquests cas LaTeX interpreta que és un error i compila el document ignorant que existeix aquest espaiat. En cas de tenir algun problema que vingui d'aquest comportament dels comandaments d'espaiat ja s'ha de mirar detingudament si existeix alguna alternativa per a poder aplicar l'espai que estem buscant. Depenent de l'entorn on treballem la solució pot ser forçar a LaTeX a ignorar la sintaxi (això és una opció en alguns entorns), fer servir paquets que ofereixen noves formes d'aplicar espaiats, etc. Com a darrer exemple podem fixar-nos novament en l'exemple \ref{ex:2.1}, on apliquem un espaiat horitzontal negatiu i les lletres del text s'encabalquen.\\\\
+Com a darrer comandament d'espaiat basic tenim un altre de local que serveix per a saltar a una pàgina en blanc nova des d'on se situa el comandament. Per a cridar-ho només es necessita escriure $\backslash$\texttt{newpage} per a poder indicar a LaTeX on tallar el darrer paràgraf i continuar la resta del text a una pàgina següent. Aquest comandament també pot ser sensible en quant a compatibilitat amb alguns entorns provinents de paquets.
 \section{Llistes}
+Amb les eines que tenim ja podriem construir llistes similars a les que podem escriure amb altres editors de text. Per a fer-ho veiem el següent exemple on aprofitem la indentació natural de la separació de paràgrafs per a poder separar del marge esquerra cada ítem de la llista.\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    \documentclass{article}
+
+    \begin{document}
+    \begin{center}
+        \textsc{La meva primera llista}
+    \end{center}
+    Ara posarem un exemple d'una llista amb quatre items:\\
+
+    - Primer item\\
+
+    - Segon item\\
+
+    - Tercer item. Aquest tercer item el farem mes llarg que la resta per a observar que es el que pasa si intentem fer una llista nomes aplicant els coneixements que tenim fins ara.\\
+
+    - Quart item
+    \end{document}
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    \begin{center}
+        \textsc{La meva primera llista}
+    \end{center}
+    Ara posarem un exemple d'una llista amb quatre items:\\
+
+    - Primer item\\
+
+    - Segon item\\
+
+    - Tercer item. Aquest tercer item el farem mes llarg que la resta per a observar que es el que pasa si intentem fer una llista nomes aplicant els coneixements que tenim fins ara.\\
+
+    - Quart item
+\end{tcolorbox}
+
+Veiem com a l'exemple \ref{ex:2.4} si intentem afegir un ítem amb una mida més gran que l'amplada de línia automàticament salta sense indentació. Tot i que això es pot corregir aplicant els comandaments que coneixem hem de dir que és una correcció una mica enrevesada i pot fer farragosa la tasca de crear qualsevol llistat. És per aquest motiu que LaTeX inclou un entorn ja perdefinit per a poder generar llistats i poder personalitzar-los lleugerament. Aquest entorn ve delimitat pel comandament \texttt{itemize}, posem un exemple de com es fa servir:\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    \documentclass{article}
+
+    \begin{document}
+    A continuacio posarem un exemple de l'entorn \texttt{itemize} amb alguna configuracio canviada.
+    \begin{itemize}
+        \item Primer item
+        \item[$\star$] Segon item
+        \item[$\square$] Tercer item. Fem tambe aquest item mes llarg per a comprovar que la indentacio queda com nosaltres volem sense haver de configurar cap cosa mes.
+        \item[-] Quart item  
+    \end{document}
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    A continuacio posarem un exemple de l'entorn \texttt{itemize} amb alguna configuracio canviada.
+    \begin{itemize}
+        \item Primer item
+        \item[$\star$] Segon item
+        \item[$\square$] Tercer item. Fem tambe aquest item mes llarg per a comprovar que la indentacio queda com nosaltres volem sense haver de configurar cap cosa mes.
+        \item[-] Quart item  
+    \end{itemize}
+\end{tcolorbox}
+
+Aquest exemple \ref{ex:2.5} deixa veure clarament com l'entorn \texttt{itemize} deixa totes les seves entrades amb una correcta indentació, a més que permet modificar el simbol de l'ítem (el marcador) segons volguem aplicant els comandaments corresponents. De moment no cal que us preocupeu pels símbols ni la seva sintaxi ja que en parlarem d'ells al capítol \ref{cap:entorn_matematic}. Com a darrer exemple d'aquest apartat us mostrarem que també es poden fer llistes anidades, permetent-nos així aplicar la jerarquía que volguem a les nostres llistes.\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    \documentclass{article}
+
+    \begin{document}
+    \begin{itemize}
+        \item Primer item 
+        \item Segon item
+        \begin{itemize}
+            \item Tercer item, aquest item es troba dins din altre \texttt{itemize}, per tant es troba en un nivell inferior i LaTeX li assigna un altre marcador i un grau d'indentacio mes.
+            \begin{itemize}
+                \item Quart item, aquest es troba a un nivell mes baix encara
+                \item Cinque item
+            \end{itemize}
+        \end{itemize}
+        \item Sise item
+    \end{itemize}
+    \end{document}
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    \begin{itemize}
+        \item Primer item 
+        \item Segon item
+        \begin{itemize}
+            \item Tercer item, aquest item es troba dins din altre \texttt{itemize}, per tant es troba en un nivell inferior i LaTeX li assigna un altre marcador i un grau d'indentacio mes.
+            \begin{itemize}
+                \item Quart item, aquest es troba a un nivell mes baix encara
+                \item Cinque item
+            \end{itemize}
+        \end{itemize}
+        \item Sise item
+    \end{itemize}
+\end{tcolorbox}
+Notem com de forma automàtica LaTeX aplica un o altre marcador segons el nivell de l'ítem dins de la jerarquia. Amb comandaments més avançats es poden configurar quins són aquests marcadors per defectes per aquells que nosaltres volguem.
 \section{Múltiples columnes}\label{sec:multiples_columnes}
+Per defecte LaTeX als seus tipus de documents més usuals aplica un format de text d'una sola columna. Amb aquest format ja ens és suficient per a poder treballar amb totes les eines que ens ofereix LaTeX, però existeixen comandaments que ens permeten treballar a dos o més columnes. Aquesta configuració és una mica delicada, en tenir  com a condició que el compilador ha d'entendre el codi que escribim doncs hem d'adaptar algunes eines comunes al format de múltiple columna. Per exemple, els entorns per a co\lgem ocar figures o taules no funcionen correctament dins d'un entorn amb múltiples columnes. Tots aquests problemes acaben tenint una solució, més o menys complicada. En aquest apartat ens centrarem només en donar certs exemples de com cridar aquests entorns tant al preàmbul com en mig del document. A la resta del curs farem comentaris de si alguna funcionalitat en concret funciona correctament amb doble columna o no i alguna solució rellevant.\\\\
+No és lo més usual, però com hem dit podem aplicar comandaments que afecten a tot el document ficant-los al preàmbul. En cas de voler aplicar doble columna a tot el document des del principi, podem posar a la configuració del tipus de document el paràmetre \texttt{twocolumn}. LaTeX entén per defecte que volem el text distribuït en dos columnes. A més també entén que aquesta distribució s'ha de completar per a omplir tot l'espai en blanc possible de l'amplada de línia. Si escribim a doble columna una quantitat de text que hauria d'omplir una columna sencera, LaTeX no acaba la primera columna i al arribar al límit salta a la següent, el que fa és directament omplir totes dues columnes a l'hora de forma coherent. En el cas de tenir aquesta quantitat de text, LaTex el ditribuïria en dues columnes que arribarien d'alçada fins a la meitat del document.\\\\
+Per a treballar a doble columna (o amb més, però això és més inusual) podem escriure dins de l'entorn \texttt{multicols}, del paquet \texttt{multicol}. Abans de poder fer-lo servir asegureu-vos que teniu el paquet declarat al preàmbul. Per a poder posar-vos exemples amb text suficient per a que es puguin apreciar les distribucions de columnes farem servir el clàssic \textit{Lorem Ipsum}.\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    \documentclass{article}
+
+    \begin{document}
+    Fora de l'entorn multicols el text es distribueix en una sola columna, com es habitual. El que ve ara es troba distribuit en dues columnes:\\
+
+    \begin{multicols}{2}
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    \end{multicols}
+    \vspace{4mm}
+    \noindent Tambe podem aplicar un format de tres columnes:\\
+
+    \begin{multicols}{3}
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    \end{multicols}
+    \end{document}
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    Fora de l'entorn multicols el text es distribueix en una sola columna, com es habitual. El que ve ara es troba distribuit en dues columnes:\\
+
+    \begin{multicols}{2}
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    \end{multicols}
+    \vspace{4mm}
+    \noindent Tambe podem aplicar un format de tres columnes:\\
+
+    \begin{multicols}{3}
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    \end{multicols}
+\end{tcolorbox}
+
+De l'exemple \ref{ex:2.7} podem veure que per a indicar el nombre de columnes que volem a la nostra distribució del text només cal que posem el nombre a l'argument de l'entorn. No es pot fer explícitament en un exemple com l'anterior ja que dins d'una tcolorbox\footnote{Veure secció \ref{sec:colorboxes}} no té sentit, però \texttt{multicols} accepta forçar la distribució del text a omplir primer la primera columna i, quan s'acabi l'espai, començar a omplir la segona. Això s'indica escrivint $\backslash$\texttt{begin\{multicols*\}\{...\}}. L'asterisc al declarar un entorn normalment significa ignorar alguna configuració específica de l'entorn, en aquest cas fa ignorar la redistribució del text en les columnes.\\\\
+Naturalment la justificació i la configuració del format del text és compatible i s'aplica de la mateixa forma que amb el text distribuït en una sola columna. Com s'ha comentat abans, la justificació del text es fa respecte a l'amplada de línia, per tant si apliquem una justificació cap a la dreta, el text es distribueix en les columnes que haguem indicat i justificat al marge de columna dret més proper que trobi.
 \section{Estructura per a un document científic}
+En la darrera secció d'aquest capítol farem servir totes les eines que hem aprés i aprendrem de noves amb l'objectiu de poder redactar el nostre primer document. Com la resta del curs aquestes eines i exemples són enfocades a un àmbit científic, però totes es poden fer servir en altres contexts molt diferents.
 \subsection{Pàgina de títol i índex}
+En diverses ocasions ens veurem amb la necessitat de presentar un treball amb una portada i amb un índex on puguem veure el llistat de continguts del document. Jugant amb la justificació, l'espaiat i el format del text podem crear una pàgina inicial que servirà com a portada, la pàgina de títol.
 \subsection{Capítols, seccions i subseccions}\label{sec:cap_sec_subsec}
 \subsection{Footnotes i etiquetes}
-\subsection{Colorboxes}
+\subsection{Colorboxes}\label{sec:colorboxes}
 
 \chapter{L'entorn matemàtic}\label{cap:entorn_matematic}
 \section{Formes de cridar un entorn matemàtic}
