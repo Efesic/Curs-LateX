@@ -26,6 +26,10 @@
 \usepackage{listings}
 \usepackage{xcolor}
 
+% Configuració del títol d'exemple:
+\title{Titol d'exemple}
+\author{Onofre A.}
+\date{Febrer 2025}
 % Color de fons dels listings
 \definecolor{bgcolor}{rgb}{0.94,0.94,0.94}
 
@@ -588,7 +592,64 @@ Naturalment la justificació i la configuració del format del text és compatib
 \section{Estructura per a un document científic}
 En la darrera secció d'aquest capítol farem servir totes les eines que hem aprés i aprendrem de noves amb l'objectiu de poder redactar el nostre primer document. Com la resta del curs aquestes eines i exemples són enfocades a un àmbit científic, però totes es poden fer servir en altres contexts molt diferents.
 \subsection{Pàgina de títol i índex}
-En diverses ocasions ens veurem amb la necessitat de presentar un treball amb una portada i amb un índex on puguem veure el llistat de continguts del document. Jugant amb la justificació, l'espaiat i el format del text podem crear una pàgina inicial que servirà com a portada, la pàgina de títol.
+En diverses ocasions ens veurem amb la necessitat de presentar un treball amb una portada i amb un índex on puguem veure el llistat de continguts del document. Jugant amb la justificació, l'espaiat i el format del text podem crear una pàgina inicial que servirà com a portada, la pàgina de títol. Posant el format del text amb negreta, canviant la mida i manualment posant números podem separar els diferents apartats en seccions. Normalment en un text científic separem la informació en cinc parts: resum o \textit{abstract}, introducció i metodologia, resultats i discussió, conclusions, i bibliografia. Posem-ne un exemple\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    \docmentclass{article}
+
+    \title{Titol d'exemple}
+    \author{Onofre A.}
+    \date{Febrer 2025}
+
+    \begin{document}
+    \maketitle
+    Aquest text apareix despres del titol, com es pot observar no es troba dins de cap entorn, per tant el seu format es el que ve per defecte.
+    \end{document}
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    \vspace{2.5cm}
+    \begin{center}
+    {\LARGE {Titol d'exemple}}\\
+    \vspace{3.5mm}
+    {\large Onofre A.}\\
+    \vspace{3.5mm}
+    {\small Febrer 2025}
+    \vspace{4mm}
+    \end{center}
+    Aquest text apareix després del títol, com es pot observar no es troba dins de cap entorn, per tant el seu format és el que ve per defecte.
+\end{tcolorbox}
+Veiem a l'exemple \ref{ex:2.8} que existeix el comandament \texttt{maketitle}. Aquest comandament genera de forma automàtica un títol amb l'autor i la data agafant la informació que afegim al preàmbul amb els comandaments \texttt{title},  \texttt{author} i \texttt{date}. Overleaf per defecte genera un document en blanc amb aquest títol agafant la informació que afegim al crear-lo. Com veiem el comandament genera un espaiat amb el marge superior, justifica al centre i separa la informació amb un salt de línia més gran de lo normal. Ens podem quedar amb aquest títol per defecte o crear els nostres propis títols amb les eines que us hem presentat abans.\\\\
+En cas de voler separar el títol en una pàgina apartada de la resta del text, podem fer servir altres eines d'espaiat del text per a generar alló que realment volem o també un entorn específic per a generar una portada. Començem amb l'entorn. Podem indicar a LaTeX que el text personalitzat dins de l'entorn \texttt{titlepage}. Aquest entorn aïlla el text que posem a dins a la primera pàgina, fent que la resta del text vingui a continuació a partir de la segona pàgina i deixant una ``marca'' que fa que el compilador entengui que allò que hi ha a dins és una portada amb un títol\footnote{Aquesta informació extra per al compilador sembla irellevant però pot ser útil per a algunes automatitzacions com per exemple per a modificar de forma més senzilla com es contabilitzen les pàgines del document. Si fem entendre a LaTeX que existeix una portada, podem fer que entengui que aquella pàgina no s'ha d'indexar amb un nombre de pàgina.}. Podem posar un exemple senzill de títol:\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    \documentclass{article}
+
+    \begin{document}
+    \begin{titlepage}
+        \centering
+        \vfill
+        {\LARGE \textsc{Titol personalitzat d'exemple}}\\
+        \vspace{4mm}
+        {\large \textbf{Autor:} Onofre A.}\\
+        {\large Optica't UAB}
+        \vfill
+    \end{titlepage}
+    \end{document}
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    \begin{minipage}{\textwidth}
+        \centering
+        \vspace{1cm}
+        {\LARGE \textsc{Titol personalitzat d'exemple}}\\
+        \vspace{4mm}
+        {\large \textbf{Autor:} Onofre A.}\\
+        {\large Optica't UAB}
+        \vspace{1cm}
+    \end{minipage}
+\end{tcolorbox}
+LaTeX pot fer aquesta tasca de separar la informació al nostre gust de forma pràcticament automàtica (com veurem a la secció \ref{sec:cap_sec_subsec}) i a més també és capaç de generar automàticament un índex ordenat i polit sense haver d'escriure res explícitament.
 \subsection{Capítols, seccions i subseccions}\label{sec:cap_sec_subsec}
 \subsection{Footnotes i etiquetes}
 \subsection{Colorboxes}\label{sec:colorboxes}
