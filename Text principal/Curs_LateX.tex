@@ -23,6 +23,7 @@
 \usepackage{rotating}
 \usepackage{titlesec}
 \usepackage{tcolorbox}
+\tcbuselibrary{breakable}
 \usepackage{listings}
 \usepackage{xcolor}
 
@@ -474,7 +475,7 @@ Amb les eines que tenim ja podriem construir llistes similars a les que podem es
     \end{document}
 \end{lstlisting}
 \textbf{Sortida:}
-\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+\begin{tcolorbox}[breakable,colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
     \begin{center}
         \textsc{La meva primera llista}
     \end{center}
@@ -700,8 +701,20 @@ Haver de preocupar-se d'un nombre limitat de \textit{footnotes} pot ser una mica
 \end{lstlisting}
 Podem notar com el primer comandament crida un nou paquet amb una certa configuració (aquella que permet reiniciar el comptador per cada pàgina i aquell que ho fa compatible amb els símbols). El segon comandament canvia la configuració del document com hem vist abans.\\\\
 Per últim, també podem forçar a que aparegui un marcador concret a una footnote específica. Només cal aplicar un segon argument al comandament \texttt{footnote}, indicant la posició a la llista de marcadors d'aquell que vulguem fer servir. Per exemple, si vull fer servir la lletra b com a marcador de la primera \textit{footnote} del meu text, he d'escriure primer el comandament que canvia la llista per defecte a la llista de lletres i després fer servir, allà on toqui, el comandament: $\backslash$\texttt{footnote[2]\{Text exemple\}}.
-
-\subsection{Colorboxes}\label{sec:colorboxes}
+\subsubsection{Etiquetes i referències}
+Novament dins del context d'un document científic normalment és necessari referenciar parts del document al mateix text. LaTeX per defecte té una eina que ens facilita la tasca d'indexar correctament aquestes referències creuades. El comandament $\backslash$\texttt{label\{...\}} és un comandament doblement local que es fa servir per a marcar objectes del nostre document i els hi co\lgem oca una etiqueta. Tenim llibertat completa per a escollir quina serà la nostra etiqueta, és a dir que l'argument de \texttt{label} és completament lliure ja que s'omple amb text pla. Aquestes etiquetes el que fan és:
+\begin{itemize}
+    \item[1.] Reconeixer quin és l'objecte del seu voltant al qual volem aplicar una referència.
+    \item[2.] Cercar quina és la posició relativa d'aquest objecte dins del document i indexar-li un número natural.
+    \item[3.] Assignar com a etiqueta o nom el text que fiquem a l'argument.   
+\end{itemize}
+Fixem-nos que el primer item de la llista és crític a l'hora de fer servir aquest comandament. Això és deu a que \texttt{label} funciona correctament amb objectes de LaTeX, no amb qualsevol troç de codi on el fiquem. LaTeX ha de reconeixer que existeix un objecte predefinit al preàmbul per a poder categoritzar-lo. Això es pot veure millor amb els exemples que venen per defecte a LaTeX. Sense que calgui declarar-los a la configuració del preàmbul existeixen per defecte alguns objectes com taules, imatges, equacions, etc. Aquests objectes són diferents i tenen un paper particular dins del text que estem redactant, per tant té sentit que cada tipus d'objecte estigui enumerat de forma independent. LaTeX té en compte aquesta caracterització dels objectes i enumera per separat les taules o les equacions  que hi ha al document. El comandament \texttt{label} aprofita aquesta informació per a seguir els tres punts que hem indicat abans. Naturalment si canviem un objecte de lloc els índex s'actualitzen i no cal que estiguem pendents de quin numero li toca a cada objecte.\\\\
+A més de considerar l'enumeració, el comandament \texttt{label} afegeix més informació a l'objecte sobre el que actua i li annexa el nom que nosaltres posem a l'argument.Dins del flux de treball pensat per a LaTeX existeix un esquema útil per a identificar fàcilment els noms que anem posant. És senzill, només cal separar per objectes els noms que posem a les etiquetes, e.g. ``tau'' quan sigui una taula, ``fig'' per a una figura, ``sec'' per a una secció... Posem un exemple de com etiquetem un capítol d'aquestes notes:
+\begin{lstlisting}
+    \chapter{L'entorn matematic}\label{cap:entorn_matematic}
+\end{lstlisting}
+Ara que ja sabem com posar etiquetes com cal podem veure quina és la seva utilitat. Un com co\lgem ocada una etiqueta a un objecte podem referenciar-la a qualsevol part del text escrivint $\backslash$\texttt{ref{...}}. Aquest comandament també es doblement local i el seu argument s'omple amb el nom de l'etiqueta que volem referenciar. El fet que puguem posar les referències en qualsevol lloc del text (ja sigui abans o després d'on es troba co\lgem ocat el \texttt{label}) fa que puguem parlar de referències creuades. Aquesta característica de LaTeX, un cop dominada, és de lo més útil que podem trobar ja que ens treu de sobre la preocupació d'indexar correctament les referències. Només cal tenir una norma clara, senzilla i fàcil de recordar per a posar nom a les etiquetes. Més endavant veurem un comandament similar per a poder ficar cites creuades de la bibliografia (veure Capítol \ref{cap:la_bibliografia}).\\\\
+Com a darrera observació d'aquesta secció, en aquestes notes fem servir de forma recurrent les etiquetes per a referenciar parts del text, és a dir, seccions, capítols, etc. Els separadors que hem vist a la subsecció anterior també són objectes independents dels altres, amb la característica que la seva enumeració prové de la propia jerarquia que ja hem explicat. A més, les referències que nosaltres posem en aquestes notes es comporten com a enllaços (com vam veure amb les \textit{footnotes}). Per defecte això no passa, més endavant al text explicarem com implementar aquests hiperenllaços. De fet existeixen paquets que permeten modificar de diverses maneres el comportament de les etiquetes i de les referències, al igual que també existeixen incompatibilitats entre les referències per defecte i alguns paquets, però això és millor trobar-s'ho un mateix.
 \chapter{L'entorn matemàtic}\label{cap:entorn_matematic}
 \section{Formes de cridar un entorn matemàtic}
 \section{Sintaxi de l'entorn matemàtic}
@@ -716,12 +729,13 @@ Per últim, també podem forçar a que aparegui un marcador concret a una footno
 \section{Figura}
 \section{Subfigura}
 \section{Taula}
-\chapter{La bibliografia}
+\chapter{La bibliografia}\label{cap:la_bibliografia}
 \section{L'arxiu \texttt{.bib}}
 \section{Referenciar i imprimir la bibliografia}
 
 \chapter{Personalització avançada}
 \section{Paquets útils}
+\subsection{colorbox}\label{sec:colorboxes}
 \subsection{babel}
 \subsection{fancyhdr}
 \subsection{hyperref}\label{sec:hyperref}
