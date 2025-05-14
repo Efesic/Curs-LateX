@@ -727,7 +727,102 @@ A més de considerar l'enumeració, el comandament \texttt{label} afegeix més i
 Ara que ja sabem com posar etiquetes com cal podem veure quina és la seva utilitat. Un com co\lgem ocada una etiqueta a un objecte podem referenciar-la a qualsevol part del text escrivint $\backslash$\texttt{ref\{...\}}. Aquest comandament també es doblement local i el seu argument s'omple amb el nom de l'etiqueta que volem referenciar. El fet que puguem posar les referències en qualsevol lloc del text (ja sigui abans o després d'on es troba co\lgem ocat el \texttt{label}) fa que puguem parlar de referències creuades. Aquesta característica de LaTeX, un cop dominada, és de lo més útil que podem trobar ja que ens treu de sobre la preocupació d'indexar correctament les referències. Només cal tenir una norma clara, senzilla i fàcil de recordar per a posar nom a les etiquetes. Més endavant veurem un comandament similar per a poder ficar cites creuades de la bibliografia (veure Capítol \ref{cap:la_bibliografia}).\\\\
 Com a darrera observació d'aquesta secció, en aquestes notes fem servir de forma recurrent les etiquetes per a referenciar parts del text, és a dir, seccions, capítols, etc. Els separadors que hem vist a la subsecció anterior també són objectes independents dels altres, amb la característica que la seva enumeració prové de la propia jerarquia que ja hem explicat. A més, les referències que nosaltres posem en aquestes notes es comporten com a enllaços (com vam veure amb les \textit{footnotes}). Per defecte això no passa, més endavant al text explicarem com implementar aquests hiperenllaços. De fet existeixen paquets que permeten modificar de diverses maneres el comportament de les etiquetes i de les referències, al igual que també existeixen incompatibilitats entre les referències per defecte i alguns paquets, però això és millor trobar-s'ho un mateix.
 \chapter{L'entorn matemàtic}\label{cap:entorn_matematic}
+En aquest capítol ens dedicarem a aprofundir una mica en la integració d'expressions matemàtiques en els nostres documents. Com la resta de capítols, el tractament que farem d'aquest tema no serà exhaustiu, ja que de ser-ho el document seria interminable. Com es pot deduïr, aquest capítol és un dels més enfocats en redactar documents de caire científic (sobre tot en branques com les maatemàtiques o la física). Tot i això, es tracta d'un capítol molt interessant per a aprendre a fer servir amb més comoditat els comandaments i entendre com es relacionen els diferents tipus d'objectes que ofereix LaTeX. Una de les parts més interessants per a aquelles persones que no vulguin fer documents científics és la part on expliquem com funcionen les matrius, ja que tenen un comportament molt semblant al de les taules.
 \section{Formes de cridar un entorn matemàtic}
+Una de les funcionalitats més polides que té LaTeX és la de poder escriure expressions matemàtiques de forma elegant i senzilla. A diferència d'altres editors de textos, LaTeX no requereix d'un lloc on cercar els símbols que necessitem copiar i enganxar continuament al document. Com es pot esperar a aquesta alçada del document, els símbols matemàtics es criden amb comandaments, de fet ja hem pogut veure algun exemple en l'anterior capítol. Per a que LaTeX pugui entendre que el que escrivim és una expressió matemàtica i no text pla podem cridar l'entorn matemàtic. De fet, podem cridar aquest entorn de més d'una forma i amb característiques diferents. Tractem ara les formes més bàsiques de cridar l'entorn matemàtic.\\\\
+Com a primera aproximació introduïm el delimitador \$. Aquest símbol serveix per a ficar expressions matemàtiques dins del paràgraf on estiguem escrivint\footnote{Aquesta característica, com veurem d'aqui uns moments és rellevant.}. Veiem-ne un exemple:\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    Aquest text es un text d'exemple que serveix per a comprovar un entorn matematic. Una de les expressions mes utilitzades en materies com la fisica es al teorema de pitagores, que s'expresa com $a^2 + b^2 = c^2$.
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    Aquest text es un text d'exemple que serveix per a comprovar un entorn matematic. Una de les expressions mes utilitzades en materies com la fisica es al teorema de pitagores, que s'expresa com $a^2 + b^2 = c^2$.
+\end{tcolorbox}
+Com es pot observar, el text que es troba entre \$ acaba adoptant un format diferent al del text pla. Les lletres acaban imprimint-se en cursiva i hi ha simbols reservats per a expressar la sintaxi matemàtica que correspon a la fòrmula de Pitàgores. De la sintaxi d'aquest entorn ens encarregarem en la següent secció.\\\\
+Una altra forma de poder cridar l'entorn matemàtic dins d'un paràgraf és escrivint els delimitadors $\backslash$( i $\backslash$). Aquests dos delimitadors actuen d'igual forma que els delimitadors \$. Són delimitadors intercanviables, però, no es poden combinar. Començar un entorn matemàtic amb un \$ i acabar-ho amb un $\backslash$) és un error de sintaxi per a LaTeX, per tant en Overleaf no escriurà res (ho ignorarà) i en altres entorns de treball directament no es compilarà el document.\\\\
+Aquestes dues formes de poder ficar fòrmules són molt convenients quan per exemple volem mencionar variables que apareguin en el nostre treball. Però, si intentem ficar una expressió molt gran el paràgraf s'acaba veient molt atapeït i no queda tan polit com pot quedar fer senrvir altres entorns matemàtics.\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    Aquest paragraf serveix com a exemple de quan es posa una expressio molt gran dins d'un paragraf. L'exemple escollit es la generalitzacio del calcul de l'hipervolum d'una $n$-esfera en una geometria de norma $p$: $V_{n}^{p}(R) = (2R)^{n} \frac{\Gamma(1+1/p)^{n}}{\Gamma(1+n/p)}$
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    Aquest paragraf serveix com a exemple de quan es posa una expressio molt gran dins d'un paragraf. L'exemple escollit es la generalitzacio del calcul de l'hipervolum d'una $n$-esfera en una geometria de norma $p$: $V_{n}^{p}(R) = (2R)^{n} \frac{\Gamma(1+1/p)^{n}}{\Gamma(1+n/p)}$
+\end{tcolorbox}
+Es pot veure de l'Exemeple \ref{ex:3.2} com l'expressió matemàtica s'acaba imprimint correctament, però es veu petita i encaixada dins del paràgraf. Existeixen expressions matemàtiques encara més farragoses que si les posem dins d'un paràgraf poden espatllar com es llegeix el text. És per això que us introduïm dues formes més per a cridar l'entorn matemàtic fora dels paràgrafs.\\\\
+Per a fer això, només cal cridar l'entorn \texttt{equation}. Aquest entorn s'encarrega de que el que fiquem a dins segueixi la sintaxi matemàtica, que surti centrat i enumerat (amb enumeració dinàmica, com és natural és una indexació que permet fer servir referències creuades). Posem-ne un exemple per a escriure la mateixa expressió que a l'Exemple \ref{ex:3.2}:\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    Aquest paragraf serveix com a exemple de text que va abans d'una expressio matematica. Tornem a presentar el calcul de l'hipervolum d'una $n$-esfera en una geometria de norma $p$:
+    \begin{equation}
+        V_{n}^{p}(R) = (2R)^{n} \frac{\Gamma(1+1/p)^{n}}{\Gamma(1+n/p)}
+    \end{equation}
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    Aquest paragraf serveix com a exemple de text que va abans d'una expressio matematica. Tornem a presentar el calcul de l'hipervolum d'una $n$-esfera en una geometria de norma $p$:
+    \begin{equation}
+        V_{n}^{p}(R) = (2R)^{n} \frac{\Gamma(1+1/p)^{n}}{\Gamma(1+n/p)}
+    \end{equation}
+\end{tcolorbox}
+Observem com de forma automàtica l'equació s'enumera amb el nombre del capítol seguit del nombre de l'equació (com és la primera que surt indexada, el seu nombre és un u). Aquesta forma de presentar equacions és més polida i permet més marge de maniobra a l'hora d'espaiar els símbols com vulguem. És notable com l'expressió es veu menys atapeïda escrita de la segona manera. En cas que vulguem escriure així una expressió matemàtica però aquesta no tingui massa rellevància al text com per a ser enumerada podem aplicar un \* al comandament equation. Com hem comentat en capítols anteriors, un asterisc usualment s'encarrega d'anu\lgem ar alguna característica d'un comandament. Veiem ara com queda el mateix exemple sense enumerar:\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    Aquest paragraf serveix com a exemple de text que va abans d'una expressio matematica. Tornem a presentar el calcul de l'hipervolum d'una $n$-esfera en una geometria de norma $p$ pero ara sense enumerar l'equacio:
+    \begin{equation*}
+        V_{n}^{p}(R) = (2R)^{n} \frac{\Gamma(1+1/p)^{n}}{\Gamma(1+n/p)}
+    \end{equation*}
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    Aquest paragraf serveix com a exemple de text que va abans d'una expressio matematica. Tornem a presentar el calcul de l'hipervolum d'una $n$-esfera en una geometria de norma $p$ pero ara sense enumerar l'equacio:
+    \begin{equation*}
+        V_{n}^{p}(R) = (2R)^{n} \frac{\Gamma(1+1/p)^{n}}{\Gamma(1+n/p)}
+    \end{equation*}
+\end{tcolorbox}
+Dues formes alternativa per a co\lgem ocar una equació sense enumerar és aplicar els delimitadors $\backslash$[ i $\backslash$] o bé cridar l'entorn \texttt{displaymath}. L'elecció d'una o altra forma de cridar un entorn matemàtic sense enumerar és la compatibilitat amb els objectes o paquets que fem servir. Per exemple, pot passar que posem algun paquet que afecti a tot el document i imposi un tipus de font i justificació a tot el text. És possible que aquest paquet per si sol (o si ha estat mal configurat) afecti al cridar \texttt{equation*}, fent que doni error. En aquest cas exemple hauriem de fer servir alguna de les alternatives per a fer el que voliem des d'un principi.\\\\ 
+La co\lgem ocació d'un \texttt{label} en un entorn equation (enumerat) ha de ser justament després d'escriure el primer delimitador de l'entorn \texttt{equation}, és a dir, s'ha d'escriure $\backslash$\texttt{\{equation\}}$\backslash$\texttt{label\{...\}}. L'etiqueta de l'entorn matemàtic mostrarà el nombre que marca l'equació al seu costat. En cas que sigui una equació sesnse enumerar com a l'Exemple \ref{ex:3.3} el \texttt{label} no tindrà informació sobre el posicioament relatiu de l'equació i no mostrarà cap referència.\\\\
+En cas de voler treballar amb més d'una columna, els entorns que hem presentat es fan servir de la mateixa forma que en una sola columna. L'únic problema és l'espai, hi ha expresions matemàtiques llargues que potser no tenen espai suficient al treballar amb, per exemple, dues columnes. Veiem-ne un exemple de l'error i una possible solució:\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    \begin{multicols}{2}
+        Com sabem, si treballem dins d'aquest entorn podem treballar amb multiples columnes. Com a exemple d'expressio llarga posarem la Segona Llei de Newton de forma explicita i fent servir diverses notacions:
+        \begin{equation*}
+            \vec{F}(\vec{r},t) = m \vec{a}(\vec{r},t) = m \frac{\text{d}\vec{v}}{\text{d}t}(\vec{r},t) = m \frac{\text{d}^2 \vec{r}}{\text{d}t^2}(t) = m \dot{\vec{v}}(t) = m \ddot{\vec{r}}(t)
+         \end{equation*}
+    \end{multicols}
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    \begin{multicols}{2}
+        Com sabem, si treballem dins d'aquest entorn podem treballar amb multiples columnes. Com a exemple d'expressio llarga posarem la Segona Llei de Newton de forma explicita i fent servir diverses notacions:
+        \begin{equation*}
+            \vec{F}(\vec{r},t) = m \vec{a}(\vec{r},t) = m \frac{\text{d}\vec{v}}{\text{d}t}(\vec{r},t) = m \frac{\text{d}^2 \vec{r}}{\text{d}t^2}(t) = m \dot{\vec{v}}(t) = m \ddot{\vec{r}}(t)
+         \end{equation*}
+    \end{multicols}
+\end{tcolorbox}
+És evident que l'expressió matemàtica que apareix a l'Exemple \ref{ex:3.5} no té espai dins de la columna on s'ha escrit, de fet, surt fora del requadre en que enmarquem els exemples. Per a poder arreglar aquest inconvenient podem fer servir el paquet \texttt{amsmath}. Aquest paquest és molt útil per a treballar amb expresions matemàtiques. Entre altres coses, permet fer una cosa que LaTeX pur no deixa fer directament dins de l'entorn \texttt{equation}, permet fer servir $\backslash \backslash$ com a salt de línia:\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    \begin{multicols}{2}
+        Tornem a escriure exactament el mateix exemple d'abans pero amb l'ajuda del paquet \texttt{amsmath}. Com a exemple d'expressio llarga posarem, novament, la Segona Llei de Newton de forma explicita i fent servir diverses notacions:
+        \begin{multline}
+            \vec{F}(\vec{r},t) = m \vec{a}(\vec{r},t) = m \frac{\text{d}\vec{v}}{\text{d}t}(\vec{r},t) = \\ = m \frac{\text{d}^2 \vec{r}}{\text{d}t^2}(t)  = m \dot{\vec{v}}(t) = m \ddot{\vec{r}}(t)
+         \end{multline}
+    \end{multicols}
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    \begin{multicols}{2}
+        Tornem a escriure exactament el mateix exemple d'abans pero amb l'ajuda del paquet \texttt{amsmath}. Com a exemple d'expressio llarga posarem, novament, la Segona Llei de Newton de forma explicita i fent servir diverses notacions:
+        \begin{multline}
+            \vec{F}(\vec{r},t) = m \vec{a}(\vec{r},t) = m \frac{\text{d}\vec{v}}{\text{d}t}(\vec{r},t) = \\ = m \frac{\text{d}^2 \vec{r}}{\text{d}t^2}(t) = m \dot{\vec{v}}(t) = m \ddot{\vec{r}}(t)
+         \end{multline}
+    \end{multicols}
+\end{tcolorbox}
+Fixant-nos en el codi que hi ha a l'Exemple \ref{ex:3.6}, enmig de les expressions matemàtiques\footnote{No us preocupeu ara de si es veu complicada la sintaxi d'aquestes fòrmules, això ho veurem al següent apartat i us acostumareu molt ràpid.} apareix escrit $=\,\,\backslash\backslash\,\,=$. A més, s'ha substituït l'entorn \texttt{equation} per l'entorn \texttt{multline}. Com a resultat, l'expressió llarga que se sortia dels marges de l'Exemple \ref{ex:3.5} es divideix justament al lloc on hem co\lgem ocat les dues contrabarres i fa un salt de línia. La primera meitat està justificada a l'esquerra i la segona a la dreta, però, si hi haguessin més salts de línia, les expressions intermedies tindrien una alineació central. Hem co\lgem ocat dos símbols d'igual per a que apareguin escrits, però no afecten en res a l'hora de fer el salt de línia, aquest es pot posar allà on es vulgui sempre i que no trenquem algun objecte que no sigui compatible amb un d'aquests salts (per exemple dins de l'argument d'algun comandament o símbol matemàtic). En cas que vulguem una equació amb \texttt{multline} sense enumerar només cal posar el comandament amb un asterisc.\\\\
+Aquesta solució és una bàsica que us presentem en aquesta secció en forma d'exemple. Però, LaTeX conté entorns on es pot treballar fent diverses linies d'expresions matemàtiques amb diferent alineació cada una. Aprofitarem una part de la següent secció per a explicar-vos ho en detall.
 \section{Sintaxi de l'entorn matemàtic}
 \subsection{Operacions bàsiques}
 \subsection{Parèntesis i claudàtors}
