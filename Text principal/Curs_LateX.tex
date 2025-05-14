@@ -781,7 +781,7 @@ Observem com de forma automàtica l'equació s'enumera amb el nombre del capíto
         V_{n}^{p}(R) = (2R)^{n} \frac{\Gamma(1+1/p)^{n}}{\Gamma(1+n/p)}
     \end{equation*}
 \end{tcolorbox}
-Dues formes alternativa per a co\lgem ocar una equació sense enumerar és aplicar els delimitadors $\backslash$[ i $\backslash$] o bé cridar l'entorn \texttt{displaymath}. L'elecció d'una o altra forma de cridar un entorn matemàtic sense enumerar és la compatibilitat amb els objectes o paquets que fem servir. Per exemple, pot passar que posem algun paquet que afecti a tot el document i imposi un tipus de font i justificació a tot el text. És possible que aquest paquet per si sol (o si ha estat mal configurat) afecti al cridar \texttt{equation*}, fent que doni error. En aquest cas exemple hauriem de fer servir alguna de les alternatives per a fer el que voliem des d'un principi.\\\\ 
+Dues formes alternatives per a co\lgem ocar una equació sense enumerar és aplicar els delimitadors $\backslash$[ i $\backslash$] o bé cridar l'entorn \texttt{displaymath}. L'elecció d'una o altra forma de cridar un entorn matemàtic sense enumerar és la compatibilitat amb els objectes o paquets que fem servir. Per exemple, pot passar que posem algun paquet que afecti a tot el document i imposi un tipus de font i justificació a tot el text. És possible que aquest paquet per si sol (o si ha estat mal configurat) afecti al cridar \texttt{equation*}, fent que doni error. En aquest cas exemple hauriem de fer servir alguna de les alternatives per a fer el que voliem des d'un principi.\\\\ 
 La co\lgem ocació d'un \texttt{label} en un entorn equation (enumerat) ha de ser justament després d'escriure el primer delimitador de l'entorn \texttt{equation}, és a dir, s'ha d'escriure $\backslash$\texttt{\{equation\}}$\backslash$\texttt{label\{...\}}. L'etiqueta de l'entorn matemàtic mostrarà el nombre que marca l'equació al seu costat. En cas que sigui una equació sesnse enumerar com a l'Exemple \ref{ex:3.3} el \texttt{label} no tindrà informació sobre el posicioament relatiu de l'equació i no mostrarà cap referència.\\\\
 En cas de voler treballar amb més d'una columna, els entorns que hem presentat es fan servir de la mateixa forma que en una sola columna. L'únic problema és l'espai, hi ha expresions matemàtiques llargues que potser no tenen espai suficient al treballar amb, per exemple, dues columnes. Veiem-ne un exemple de l'error i una possible solució:\\\\
 \exemple{\label{ex:\theexemple}}
@@ -822,11 +822,49 @@ En cas de voler treballar amb més d'una columna, els entorns que hem presentat 
     \end{multicols}
 \end{tcolorbox}
 Fixant-nos en el codi que hi ha a l'Exemple \ref{ex:3.6}, enmig de les expressions matemàtiques\footnote{No us preocupeu ara de si es veu complicada la sintaxi d'aquestes fòrmules, això ho veurem al següent apartat i us acostumareu molt ràpid.} apareix escrit $=\,\,\backslash\backslash\,\,=$. A més, s'ha substituït l'entorn \texttt{equation} per l'entorn \texttt{multline}. Com a resultat, l'expressió llarga que se sortia dels marges de l'Exemple \ref{ex:3.5} es divideix justament al lloc on hem co\lgem ocat les dues contrabarres i fa un salt de línia. La primera meitat està justificada a l'esquerra i la segona a la dreta, però, si hi haguessin més salts de línia, les expressions intermedies tindrien una alineació central. Hem co\lgem ocat dos símbols d'igual per a que apareguin escrits, però no afecten en res a l'hora de fer el salt de línia, aquest es pot posar allà on es vulgui sempre i que no trenquem algun objecte que no sigui compatible amb un d'aquests salts (per exemple dins de l'argument d'algun comandament o símbol matemàtic). En cas que vulguem una equació amb \texttt{multline} sense enumerar només cal posar el comandament amb un asterisc.\\\\
-Aquesta solució és una bàsica que us presentem en aquesta secció en forma d'exemple. Però, LaTeX conté entorns on es pot treballar fent diverses linies d'expresions matemàtiques amb diferent alineació cada una. Aprofitarem una part de la següent secció per a explicar-vos ho en detall.
+Aquesta solució és una bàsica que us presentem en aquesta secció en forma d'exemple. Però, el paquet \texttt{amsmath} conté entorns on es pot treballar fent diverses linies d'expresions matemàtiques amb diferent alineació cada una. Aprofitarem una part de la següent secció per a explicar-vos ho en detall.
 \section{Sintaxi de l'entorn matemàtic}
-\subsection{Operacions bàsiques}
+Com ja hem pogut observar en alguns exemples, les expressions matemàtiques escrites en LaTeX poden arribar a confondre molt per a les persones que mai han vist una sintaxi semblant. Potser no ho sembla, però escriure aquestes expressions matemàtiques acaba sent bastant repetitiu i, un cop us acostumeu, saber o no saber com escriure certa expressió matemàtica serà el menor dels vostres problemes a l'hora d'escriure un document en LaTeX.\\\\
+Començem aquest apartat indicant algunes característiques bàsiques de la sintaxi matemàtica de LaTeX. El primer que hem de considerar al escriure en un entorn matemàtic és que no existeixen els espais, és a dir, escriure \$ \texttt{a + b} \$ i escriure \$\texttt{a+b}\$ és completament equivalent. Qualsevol de les dues expressions anteriors imprimeix $a +b$ per pantalla. Com hem dit, les lletres que fem servir per a esciure en text pla, dins d'un entorn matemàtic surten en cursiva. Intentar escriure una frase normal en aquests entorns fa que quedi visualment malament:
+\begin{center}
+\$\texttt{Frase exemple dins d'un entorn matematic}\$ $\longrightarrow Frase exemple dins d'un entorn matematic$
+\end{center}
+Un altra canvi respecte a escriure en text pla és que les lletres no accepten accents, en cas d'escriure una lletra accentuada LaTeX dona error de sintaxi. Aquest tractament de l'alfabet està pensat per a tractar a cada lletra com a una variable matemàtica.\\\\
+Al principi pot semblar que aquest entorn és molt restrictiu, però està pensat per a facilitar la feina per a escriure equacions. En cas de voler aplicar més personalització espaial podem fer servir els comandaments \texttt{hspace} i \texttt{vspace} que ja coneixem\footnote{Tot i que el segon (\texttt{vspace}) no se sol fer servir en expresions que ocupen una o dues linies. Un posible ús d'aquest comandament pot ser quan es construeixen matrius, però igualment és poc usual.}. Si, com hem vist en els Exemples \ref{ex:3.5} i \ref{ex:3.6}, ens quedem sense espai al escriure una expressió matemàtica podem fer us de dos entorns molt convenients que provenen del paquet \texttt{amsmath}. El primer entorn que presentem, \texttt{split}, serveix per a quan tenim una única equació o expressió matemàtica molt llarga i la volem partir i alinear com cal; el segon entorn, \texttt{align}, serveix per a quan tenim més d'una equació i les volem co\lgem ocar ben alineades en el mateix bloc al document. Veiem-ne primer exemples d'us dels dos entorns i posteriorment expliquem que fa cada un:\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    En aquest primer bloc matematic apliquem l'entorn \texttt{split} per a una expressio matematica molt llarga. Posem com a exemple una expressio intermitja (sense simplificar) del calcul d'una component del tensor d'inercia d'un triangle rectangle que rota sobre el seu vertex on te l'angle recte:
+    \begin{equation}
+        \begin{split}
+            J_{11} = & \frac{\sigma}{3} \left(a^{4}\sin^{3}{\alpha}\cos{\alpha} - \frac{3}{2}a^{4}\tan{\alpha}\sin^{2}{\alpha}\cos^{2}{\alpha} + \right.\\ & \left. a^{4}\cos^{3}{\alpha}\sin{\alpha}\tan^{2}{\alpha} - \frac{1}{4}a^{4}\tan^{3}{\alpha}\cos^{4}{\alpha}\right)
+        \end{split}
+    \end{equation}
+    En aquest segon bloc matematic farem servir l'entorn \texttt{align}. Aquest comandament normalment es fa servir per a alinear mes d'una equacio. L'exemple anterior es pot simplificar si sabem el valor de $\sigma$. Podem aprofitar-ho com es veu al bloc que ve a continuacio:
+    \begin{align}
+        J_{11} & = \frac{\sigma}{3} \left(a^{4}\sin^{3}{\alpha}\cos{\alpha} - \frac{3}{2}a^{4}\tan{\alpha}\sin^{2}{\alpha}\cos^{2}{\alpha} + a^{4}\cos^{3}{\alpha}\sin{\alpha}\tan^{2}{\alpha} - \frac{1}{4}a^{4}\tan^{3}{\alpha}\cos^{4}{\alpha}\right) \\
+        J_{11} & = \frac{1}{6}Ma^{2}\sin^{2}{\alpha}
+    \end{align}
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    En aquest primer bloc matematic apliquem l'entorn \texttt{split} per a una expressio matematica molt llarga. Posem com a exemple una expressio intermitja (sense simplificar) del calcul d'una component del tensor d'inercia d'un triangle rectangle que rota sobre el seu vertex on te l'angle recte:
+    \begin{equation}
+        \begin{split}
+            J_{11} = & \frac{\sigma}{3} \left(a^{4}\sin^{3}{\alpha}\cos{\alpha} - \frac{3}{2}a^{4}\tan{\alpha}\sin^{2}{\alpha}\cos^{2}{\alpha} + \right.\\ & \left. a^{4}\cos^{3}{\alpha}\sin{\alpha}\tan^{2}{\alpha} - \frac{1}{4}a^{4}\tan^{3}{\alpha}\cos^{4}{\alpha}\right)
+        \end{split}
+    \end{equation}
+    En aquest segon bloc matematic farem servir l'entorn \texttt{align}. Aquest comandament normalment es fa servir per a alinear mes d'una equacio. L'exemple anterior es pot simplificar si sabem el valor de $\sigma$. Podem aprofitar-ho com es veu al bloc que ve a continuacio:
+    \begin{align}
+        J_{11} & = \frac{\sigma}{3} \left(a^{4}\sin^{3}{\alpha}\cos{\alpha} - \frac{3}{2}a^{4}\tan{\alpha}\sin^{2}{\alpha}\cos^{2}{\alpha} + a^{4}\cos^{3}{\alpha}\sin{\alpha}\tan^{2}{\alpha} - \frac{1}{4}a^{4}\tan^{3}{\alpha}\cos^{4}{\alpha}\right) \\
+        J_{11} & = \frac{1}{6}Ma^{2}\sin^{2}{\alpha}
+    \end{align}
+\end{tcolorbox}
+L'entorn \texttt{split} és un entorn que per a poder cridar-lo és necessari que se situi dins d'un entorn \texttt{equation} o \texttt{equation*}. Serveix per a poder tallar una expressió llarga per on vulguem (igual que l'entorn \texttt{multline}) però a més permet alinear els troços que anem separant per allà on vulguem. Cada troç de l'expressió que separem accepta un \&, un simbol que marca en quin lloc del troç d'expressió s'alinearan. Com només s'encarrega de tallar, tota l'expressió matemàtica que fiquem quedarà enumerada pel mateix índex.\\\\
+En canvi, l'entorn \texttt{align} és un entorn matemàtic per si sol, no necessita que es co\lgem dins de cap altre entorn. Aquest serveix per a escriure diferents equacions o expressions de forma separada pero amb la capacitat de ser alineades allà on vulguem. Es fa servir de forma molt similar a \texttt{només}, l'alineació funciona de la mateixa manera. Però, una diferència clau és que \texttt{align} separa cada expressió com a una equació diferent, per tant, enumera cada troç separat amb un índex diferent\footnote{Notem com l'expressió és massa llarga com per a que l'enumeració entri dins de l'espai que li toca. Quan això passa l'enumeració passa a la següent línia com es pot veure al segon cas de l'Exemple \ref{ex:3.7}. Per a solucionar aquest (possible) inconvenient podem fer servir \texttt{split} dins de l'entorn \texttt{align}.}.
+\subsection{Operacions i relacions matemàtiques}
 \subsection{Parèntesis i claudàtors}
 \subsection{Alguns accents, simbols i formats útils}
+\subsubsection{Expressió d'unitats}
 \subsection{Límits, sumatoris, productoris i integrals}
 \section{Matrius i alineació}
 \section{Exemples}
