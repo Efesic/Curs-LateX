@@ -1,4 +1,4 @@
-\documentclass[12pm,twosides,onecolumn,openany]{book}
+\documentclass[12pm,oneside,onecolumn,openany]{book}
 \usepackage{graphicx} 
 \usepackage[catalan]{babel}
 \usepackage{emptypage}
@@ -11,6 +11,7 @@
 \usepackage{wrapfig}
 \usepackage[a4paper]{geometry}
 \geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+\usepackage{layout}
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \usepackage{amsmath}
@@ -860,7 +861,7 @@ Al principi pot semblar que aquest entorn és molt restrictiu, però està pensa
     \end{align}
 \end{tcolorbox}
 L'entorn \texttt{split} és un entorn que per a poder cridar-lo és necessari que se situi dins d'un entorn \texttt{equation} o \texttt{equation*}. Serveix per a poder tallar una expressió llarga per on vulguem (igual que l'entorn \texttt{multline}) però a més permet alinear els troços que anem separant per allà on vulguem. Cada troç de l'expressió que separem accepta un \&, un simbol que marca en quin lloc del troç d'expressió s'alinearan. Com només s'encarrega de tallar, tota l'expressió matemàtica que fiquem quedarà enumerada pel mateix índex.\\\\
-En canvi, l'entorn \texttt{align} és un entorn matemàtic per si sol, no necessita que es co\lgem dins de cap altre entorn. Aquest serveix per a escriure diferents equacions o expressions de forma separada pero amb la capacitat de ser alineades allà on vulguem. Es fa servir de forma molt similar a \texttt{només}, l'alineació funciona de la mateixa manera. Però, una diferència clau és que \texttt{align} separa cada expressió com a una equació diferent, per tant, enumera cada troç separat amb un índex diferent\footnote{Notem com l'expressió és massa llarga com per a que l'enumeració entri dins de l'espai que li toca. Quan això passa l'enumeració passa a la següent línia com es pot veure al segon cas de l'Exemple \ref{ex:3.7}. Per a solucionar aquest (possible) inconvenient podem fer servir \texttt{split} dins de l'entorn \texttt{align}.}.
+En canvi, l'entorn \texttt{align} és un entorn matemàtic per si sol, no necessita que es co\lgem oquem dins de cap altre entorn. Aquest serveix per a escriure diferents equacions o expressions de forma separada pero amb la capacitat de ser alineades allà on vulguem. Es fa servir de forma molt similar a \texttt{split}, l'alineació funciona de la mateixa manera. Però, una diferència clau és que \texttt{align} separa cada expressió com a una equació diferent, per tant, enumera cada troç separat amb un índex diferent\footnote{Notem com l'expressió és massa llarga com per a que l'enumeració entri dins de l'espai que li toca. Quan això passa l'enumeració passa a la següent línia com es pot veure al segon cas de l'Exemple \ref{ex:3.7}. Per a solucionar aquest (possible) inconvenient podem fer servir \texttt{split} dins de l'entorn \texttt{align}.}.
 \subsection{Operacions i relacions matemàtiques}
 \subsection{Parèntesis i claudàtors}
 \subsection{Alguns accents, simbols i formats útils}
@@ -870,14 +871,295 @@ En canvi, l'entorn \texttt{align} és un entorn matemàtic per si sol, no necess
 \section{Exemples}
 
 \chapter{Figures i taules}\label{cap:figures_taules}
-\section{Figura}
-\section{Subfigura}
-\section{Taula}
+Un document qualsevol és molt probable que necessiti d'elements gràfics o visuals que ajudin a comprendre la informació que s'està exponent. En aquest capítol us donarem algunes eines bàsiques que haurien de ser suficients per a poder col\lgem ocar imatges i taules, la seva configuració i alguns tips per a poder obtenir un document endreçat.\footnote{Aquestes eines funcionen sempre en tipus de document com \texttt{article} o \texttt{book}. Però, en altres tipus de document, amb documents amb una configuració específica o al carregar un paquet que canviï molt LaTeX bàsic és possible que no funcionin. En aquests casos s'ha de veure cada cas de forma individual, intentant comprendre com funcionen el tipus de document, la configuració imposada o el paquet insta\lgem at.}\\\\
+Tant les figures com les taules es treballen amb entorns i comandaments que generen objecetes o entorns de tipus flotant. Ja ho hem comentat en capítols anteriors, aquests objectes fotants són elements que LaTeX entén que s'han de co\lgem ocar dins del document a la posició més òptima possible. El compilador de LaTeX obté informació de la configuració de l'objecte flotant i el co\lgem oca segons la jerarquia que vulguem. S'ha de tenir en compte que el lloc on posicionem l'objecte flotant ha de ser compatible amb objectes flotants. Si no treballem en entorns que canviïn molt el posicionament dels paràgrafs en text pla o altres objectes comuns com els entorns matemàtics podem fer servir objectes flotants sense cap problema. En aquest capítol veurem un entorn incompatible amb objectes flotants i com solucionar-ho.\\\\
+Per a poder entendre en més profunditat com funcionen els entorns \texttt{figure} i \texttt{table} primer hem de fer un cop d'ull a l'entorn \texttt{minipage} i a l'estructura d'un document de LaTeX per defecte. Podeu aprofundir sobre aquest entorn i l'estructura d'un document a la documentació de la bibliografia \cite{guide}\cite{minipage}.
+\section{Format de pàgina}
+Cada pàgina d'un document de LaTeX se separa en tres parts: capçalera, cos i peu. La configuració de la mida de les separacions d'aquestes tres parts de cada pàgina modifica el posicionament dels objectes que cridem amb el codi. Aquesta configuració la podem modificar al preàmbul amb el comandament de configuració $\backslash$\texttt{setlenght}\{...\}\{...\}. Veiem com aquest comandament té dos espais on co\lgem ocar arguments. El primer espai serveix per a indicar quina és la distància concreta que volem modificar i el segon per a indicar la modificació que volem aplicar a aquesta distància. Per a aclarir aquesta descripció podem redactar un exemple:\\\\
+El comandament $\backslash$\texttt{textwidth} és aquell comandament que conté la informació de la mida de l'amplada del text al document que estem escrivint. Notem que hem dit l'amplada del text \underline{al document}, és a dir, entre els marges que haguem configurat al preàmbul. Existeix un altre comandament similar (que se sol fer servir de forma indiferent però sense saber exactament les diferències que tenen) anomenat $\backslash$\texttt{linewidth}. Aquest segon comandament conté la informació de la mida de l'amplada de text a l'entorn on estem redactant. Veiem doncs que, mentre que \texttt{linewidth} és dinàmic, \texttt{textwidth} és fixe\footnote{Això es pot notar molt en el cas de escriure en més d'una columna, mentre que \texttt{textwidth} es manté constant \texttt{linewidth} es modifica adaptant-se a la mida de l'amplada de la columna on estem treballant.}. En cas que vulguem modificar la mida per defecte del \texttt{textwidth} podem aplicar el comandament 
+\begin{center}
+    $\backslash$\texttt{setlenght}\{$\backslash$\texttt{textwidth}\}\{\textit{mida + unitats}\}
+\end{center}
+on al darrer comandament pondem co\lgem ocar la mida que vulguem amb les seves corresponents unitats (com si emplenesim un \texttt{hspace} o \texttt{vspace}).\\\\
+També podem aplicar la mida d'una distància a una altra amb el mateix comandament. Si per exemple estem treballant a doble columna i volem (per algun motiu excepcional) que \texttt{linewidth} tingui la mateixa mida que \texttt{textwidth} podem escriure
+\begin{center}
+    $\backslash$\texttt{setlenght}\{$\backslash$\texttt{linewidth}\}\{$\backslash$\texttt{textwidth}\}
+\end{center}
+En aquest cas no cal que posem unitats ja que no estem especificant una distància amb números. Us deixem una breu llista amb algunes de les distàncies que es poden modificar per a adaptar el format de pàgina del nostre document:
+\begin{itemize}
+    \item \texttt{textwidth} - Amplada completa del text dins del cos
+    \item \texttt{textheight} - Altura completa del text dins del cos
+    \item \texttt{headheight} - Altura de la capçalera del document
+    \item \texttt{topmargin} - Marge superior fins a la frontera superior de la capçalera
+    \item \texttt{footheight} - Altura del peu de pàgina
+    \item \texttt{footskip} - Distància des de la base del cos fins a la frontera inferior del peu de pàgina
+\end{itemize}
+També us deixem un recurs visual per a poder observar aquestes distàncies per al format de pàgina d'aquestes notes, Figura \ref{fig:format_notes}, i per a un document en blanc de LaTeX, Figura \ref{fig:format_default}.\footnote{Aquests esquemes mostren més distàncies de les que hem posat al llistat. Podeu obtenir-los al vostre document amb el paquet \texttt{layout} i co\lgem ocant $\backslash$\texttt{layout} allà on vulgueu que s'imprimeixi la imatge.}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\linewidth]{Imatges/layout_notes.png}
+    \caption{Esquema de distàncies que determinen el format de pàgina d'un document de LaTeX on s'han forçat els marges amb el paquet \texttt{geometry}.}\label{fig:format_notes}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\linewidth]{Imatges/layout_predeterminat.png}
+    \caption{Esquema de distàncies que determinen el format de pàgina d'un document de LaTeX per defecte.}\label{fig:format_default}
+\end{figure}
+\section{L'entorn \texttt{minipage}}\label{sec:minipage}
+L'entorn \texttt{minipage} genera capses independents de la resta del text on es pot escriure com si fos un paràgraf normal. Al seu interior podem escriure text pla o incloure imatges. L'entorn \texttt{minipage} no és un entorn flotant, genera les capses allà con el co\lgem oquem al codi. Posem un exemple senzill per a comprendre a què ens referim quan diem que genera capses:\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    Aquest es un text d'exemple fora del minipage,
+    \begin{minipage}{3cm}
+        un cop el text que escrivim es troba dins del minipage es co\lgem oca dins del document en forma de capsa amb una amplada de 3 centimetres.
+    \end{minipage}
+    Fora del minipage podem continuar escrivint de forma normal, respectant el salt de linia for\c{c}at per l'al\c{c}ada que s'ha generat pel \texttt{minipage}.
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    Aquest es un text d'exemple fora del minipage,
+    \begin{minipage}{3cm}
+        un cop el text que escrivim es troba dins del minipage es co\lgem oca dins del document en forma de capsa amb una amplada de 3 centimetres.
+    \end{minipage}
+    Fora del minipage podem continuar escrivint de forma normal, respectant el salt de linia for\c{c}at per l'al\c{c}ada que s'ha generat pel \texttt{minipage}.
+\end{tcolorbox}
+Veiem com a l'Exemple \ref{ex:4.1} en mig de la línia es genera un requadre que correspon a l'entorn \texttt{minipage}. Aquest requadre té l'amplada que indiquem a l'argument del \texttt{minipage}. Aquest argument és obligatori per a poder fer servir-ho, si no es co\lgem oca LaTeX ho ignora i pot donar a error. Dins de l'espai generat pel minipage el text es comporta com a text pla només que es troba restringit al nou format imposat pel \texttt{minpage}. De fet, el nom del comandament mateix ho indica, el que fa és com si es generés una mini pàgina amb un format en concret. Dins d'aquest espai generat podem editar pràcticament com si fos un altre document dins del nostre document. Els entorns \texttt{minipage} es poden anidar, iguala quan feiem \texttt{itemize} anidats, un dins de l'altre. Només cal ser coherent amb l'espai disponible al nostre document abans i després de co\lgem ocar els \texttt{minipage}.\\\\
+Podem notar com per defecte la capsa on s'imprimeix el text que va al \texttt{minipage} queda aliniada verticalment amb la resta del text pel centre. Podem controlar aquesta aliniació aplicant un paràmetre de configuració secundària que, com hem pogut observar anteriorment, s'aplica entre claudators. Les possibles configuracions són tres:
+\begin{itemize}
+    \item c - Per a aliniació pel centre
+    \item b - Per a aliniació per la vorera inferior de la capsa
+    \item t - Per a aliniació per la vorera superior de la capsa
+\end{itemize}
+Observem millor aquesta aliniació amb un exemple.\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    Aquesta linia mostra un exemple de
+    \begin{minipage}[b]{1.5cm}
+        paragraf aliniat per baix
+    \end{minipage},
+    \begin{minipage}[c]{1.5cm}
+        paragraf aliniat pel centre
+    \end{minipage} i 
+    \begin{minipage}[t]{1.5cm}
+        paragraf aliniat per dalt
+    \end{minipage}
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    Aquesta linia mostra un exemple de
+    \begin{minipage}[b]{1.5cm}
+        paragraf aliniat per baix
+    \end{minipage},
+    \begin{minipage}[c]{1.5cm}
+        paragraf aliniat pel centre
+    \end{minipage} i 
+    \begin{minipage}[t]{1.5cm}
+        paragraf aliniat per dalt
+    \end{minipage}
+\end{tcolorbox}
+Sabent aquest funcionament del \texttt{minipage} i tenint cura de quant espai ocupa el nostre \texttt{textwidth}\footnote{El motiu d'aquesta precaució és una possible i no desitjada reco\lgem ocació dels objectes a la pàgina que estem editant. Depenent de que s'intenti imprimir al document si dos objectes ocupen completament la mida del \texttt{textwidth} LaTeX automàticament fa un salt de línia per a optimitzar l'espai. Per a evitar això, com veurem en algun exemple, podem forçar a que els objectes en la seva totalitat ocupin una mica menys que el \texttt{textwidth} del que disposen.} podem recrear al nostre document el funcionament de la doble columna. Aquesta forma d'aplicar-ho és interessant en alguns formats comuns de presentació d'imatges en un text qualsevol. Ara posarem un exemple d'això, però abans expliquem breument com podem afegir imatges fent servir LaTeX.
+\subsection{Incloure imatges al document}
+Ho hem comentat a l'inici d'aquestes notes i ho tornem a remarcar en aquesta subsecció: podem treballar amb LaTeX utilitzant diferents entorns de treball. Podriem dir que només cal un editor de textos per a poder començar a escriure en LaTeX i que la resta de la feina seria poder pasar el nostre arxiu en format \texttt{.tex} pel compilador per a poder obtenir un arxiu pdf. Pensar que per a treballar amb LaTeX només ens calen aquestes dues coses és una limitació, disposem de moltes eines fora d'un arxiu de text!\\\\
+El que intentem motivar en aquesta introducció és a ser conscient que els arxius de LaTeX existeixen dins d'un directori on hi han altres arxius, de qualsevol tipus, i a més que podem relacionar-los i fer-los servir com a eines per a millorar els nostres documents. Si es treballa en local potser aquesta motivació no cal ja que és un fet força obvi. Però, si treballes en local al teu dia a dia vol dir que has hagut de moure't ja una mica entre directoris i, per tant, la teva experiència fa que les coses es vegin òbvies. Aquestes notes són introductories, per tant intentarem seguir un aprenentatge natural envers aquests conceptes, començant per indicar que per a algú que s'està iniciant no veu òbvies aquestes coses. Fem primer un esboç general i després ho traslladarem a Overleaf, que és el nostre entorn de treball. En aquesta part només explicarem lo necessari per a poder utilitzar imatges, però si es vol aprofundir una mica més podeu anar a la Secció \ref{sec:arxius_externs}.
+\subsubsection{Funcionament dels directoris}
+Els arxius amb els que treballem o interactuem dins d'un ordinador s'ordenen en directoris o carpetes. En els sistemes operatius d'us comú és òbvia aquesta forma d'ordenar la informació la nostre dispositiu, es pot observar fins i tot de forma totalment visual amb, per exemple, l'explorador d'arxius de Windows. Navegar entre els arxius és molt intuïtiu, només cal entrar a la carpeta on volem veure els arxius que ens interessa. Aquesta acció d'entrar a un direcotri ve determinada per la seva ruta d'accés, i la ruta d'accés no és més que els noms dels directoris que s'han anat seleccionant, de més general a més concret llegint la ruta d'esquerra a dreta. És notable que la forma en que els directoris ordenen la informació és de forma anidada, existeix un directori que conté la resta de directoris que podem anomernar unitat principal.\\\\
+Un dels conceptes clau per a entendre el funcionament dels directoris és saber com es delimita l'accés d'un arxiu a la resta de directoris que existeixen. Si no s'indica cap ruta d'un directori en concret, la informació a la que pot accedir un arxiu situat a un directori és només la que se situa al mateix directori, al mateix nivell. És a dir, si el nostre arxiu es troba a la carpeta $A$ i aquesta conté, a part del nostre arxiu $X$, dues carpetes més anomenades $B$ i $C$ i un arxiu de text $Y$, llavors només podrem tenir accés a la informació de l'arxiu de text $Y$ que ens acompanya. La informació de les carpetes $B$, $C$ i aquelles que es trobin abans de la $A$ no seràn accesibles si no s'especifica la ruta d'accés.\\\\
+Per a poder accedir a informació a partir de les rutes d'accés primer hem de començar per un punt de referència, és a dir, seleccionar el directori des d'on aplicarem les rutes per a cercar la informació que volem\footnote{A partir d'aquest moment hauriem de començar a parlar de rutes relatives d'accés, però les seguirem dient simplement rutes d'accés. Aquesta diferència prové de que amb una referència ja no és necessari accedir al nostre directori desde la unitat més general del nostre ordinador, només cal seleccionar la posició relativa dels nostres directoris al nostre dispositiu i la resta de la informació vindrà donada mitjançant el punt de referència. Això és útil per a compartir projectes, ja que tothom té un ordre i noms únics dels seus propis directoris. Amb aquesta eina, si algú descarrega el directori més general d'un programa o conjunt d'arxius, ja pot navegar per tot el codi sense haver d'adaptar totes les rutes d'accés a com té els directoris al seu ordinador.}. El punt de referència pot canviar segons l'arxiu des del qual busquem accedir a altres directoris, però normalment per defecte és el mateix directori a on es troba el nostre arxiu. Per a poder utilitzar la navegació per rutes hem de fer servir comandaments que ens permetin pujar i baixar de nivell dins dels directoris (de no fer-ho no hi hauria manera d'accedir a la informació que volem). En terminals tant de Windows com Mac o Linux el comandament que permet pujar de nivell s'escriu amb dos punts. Veiem les diverses situacions comunes i com s'accedeix a la informació en cada una d'elles. Als següents exemples situem la referència a on es troba el nostre arxiu $X$ (marcat amb un triangle negre) i volem fer servir la informació que es troba a l'arxiu $Y$. La sintaxi de les rutes és la que es fa servir Linux, però, com hem dit, és fa d'una forma molt similar amb Windows o Mac.\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{center}
+    \textsc{Visualització dels directoris}
+\end{center}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    Primera situació, punt de referència situat al mateix nivell en el mateix directori:
+    \begin{itemize}
+        \item[$\blacktriangleright$] Directori\_A
+        \begin{itemize}
+            \item[] Arxiu\_X.tex
+            \item[] Arxiu\_Y.tex
+            \item[$\triangleright$] Directori\_B
+            \item[$\triangleright$] Directori\_C 
+        \end{itemize}
+    \end{itemize}
+\end{tcolorbox}
+\begin{lstlisting}
+    # Ruta d'acces
+    Arxiu_Y.tex
+\end{lstlisting}
+Aquesa situació és la més senzilla, passa quan els dos arxius es troben al mateix directori. Fariem servir la mateixa ruta d'accés si els dos arxius estiguessin a $B$ o a $C$. Notem que és necessari especificar el tipus d'arxiu i no només el nom, en aquest cas és un arxiu de codi de LaTeX, format \texttt{.tex}.\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{center}
+    \textsc{Visualització dels directoris}
+\end{center}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    Segona situació, punt de referència situat a un nivell superior:
+    \begin{itemize}
+        \item[$\blacktriangleright$] Directori\_A
+        \begin{itemize}
+            \item[] Arxiu\_X.tex
+            \item[$\triangleright$] Directori\_B
+            \begin{itemize}
+                \item[] Arxiu\_Y.tex
+            \end{itemize}
+            \item[$\triangleright$] Directori\_C
+        \end{itemize}
+    \end{itemize}
+\end{tcolorbox}
+\begin{lstlisting}
+    # Ruta d'acces
+    Directori_B/Arxiu_Y.tex
+\end{lstlisting}
+En aquest segon cas de l'Exemple \ref{ex:4.4}, com la informació es troba en un nivell inferior a la referència podem accedir de forma senzilla escrivint la ruta només amb el nom del directori i l'arxiu. És anàleg a entrar a la carpeta on es troba l'arxiu que ens interessa.\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{center}
+    \textsc{Visualització dels directoris}
+\end{center}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    Tercera situació, punt de referència situat a un nivell inferior:
+    \begin{itemize}
+        \item[$\triangleright$] Directori\_A
+        \begin{itemize}
+            \item[] Arxiu\_Y.tex
+            \item[$\blacktriangleright$] Directori\_B
+            \begin{itemize}
+                \item[] Arxiu\_X.tex
+            \end{itemize}
+            \item[$\triangleright$] Directori\_C
+        \end{itemize}
+    \end{itemize}
+\end{tcolorbox}
+\begin{lstlisting}
+    # Ruta d'acces
+    ../Arxiu_Y.tex
+\end{lstlisting}
+La ruta d'aquest tercer cas comença amb dos punts. Aquest comandament serveix per a pujar de nivell dins dels directoris, si pensem que és com moure un cursor, el comandament \texttt{../} ens fa canviar el cursor de la carpeta $B$ a la carpeta $A$. Con ja ens trobem al directori on es troba l'arxiu que ens interessa només cal continuar posant el nou de l'arxiu $Y$. Continuant amb l'analogia anterior, podem pensar que el que fem es anar cap a enrera entre els directoris i després accedir a l'arxiu que ens interessa. Veiem finalment un darrer cas que és una mescla dels Exemples \ref{ex:4.4} i \ref{ex:4.5}.\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{center}
+    \textsc{Visualització dels directoris}
+\end{center}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    Quarta situació, punt de referència situat al mateix nivell però en directoris diferents:
+    \begin{itemize}
+        \item[$\triangleright$] Directori\_A
+        \begin{itemize}
+            \item[$\triangleright$] Directori\_B
+            \begin{itemize}
+                \item[] Arxiu\_X.tex
+            \end{itemize}
+            \item[$\blacktriangleright$] Directori\_C
+            \begin{itemize}
+                \item[] Arxiu\_X.tex
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{tcolorbox}
+\begin{lstlisting}
+    # Ruta d'acces
+    ../Directori_B/Arxiu_Y.tex
+\end{lstlisting}
+Observem que hem hagut de primer pujar un nivell (directori $A$) i posteriorment tornar a baixar-lo pero entrant en el directori corresponent. Podem pensar que l'acció que fem és anar cap a enrere entre els directoris i després accedir a la carpeta on es troba l'arxiu que ens interessa.\\\\
+Coneixent el funcionament bàsic dels directoris podem tractar sense complicacions la introducció d'imatges dins de LaTeX escrvint en un entorn de treball qualsevol. Observem el cas concret d'Overleaf. Com ja sabem Overleaf és un editor de textos que funciona en línia. Cada cop que obrim un nou arxiu es genera un directori principal amb un arxiu \texttt{.tex} omplert amb la informació predeterminada d'un document nou per defecte. La navegació entre els directoris a Overleaf succeceix a la part esquerra de l'overlay, a l'explorador d'arxius. Com usualment treballem en l'arxiu \texttt{.tex} principal (anomenat \texttt{main} per defecte) del document, sempre tindrem que el nostre punt de referència serà la carpeta més general del nostre nou document.\\\\
+En Overleaf podem pujar a l'explorador els arxius que vulguem i ordenar-los en carpetes. El funcionament dels directoris en aquest explorador és igual a com hem explicat més a dalt.
+\subsubsection{Selecció d'imatges per a un document}
+Usualment per a treballar de forma ordenada el que es fa en un document d'Overleaf (o en el directori principal del nostre projecte de LaTeX en local) és mantenir el nostre arxiu \texttt{.tex} dins del directori principal i en una carpeta a part les imagtes que volem fer servir al document. Pujar les imatges a l'explorador és fàcil, només cal prémer \begin{minipage}{0.5cm} \includegraphics[width=\linewidth]{Imatges/pujar_arxiu_Overleaf.png} \end{minipage} i buscar o arrastrar els arxius que vulguem pujar.\\\\
+Un cop pujem els arxius que vulguem necessitem cridar una funció que els imprimieixi al document. Per a aquesta tasca farem servir el paquet \texttt{graphicx}. En Overleaf aquest paquet es carrega al preàmbul de forma automàtica. Principalment \texttt{graphicx} permet imprimir i configurar imatges allà on les co\lgem oquem al text fent servir el comandament \texttt{includegraphics}. Posem un exemple.\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    Aquest text ve abans d'incloure una imatge del nostre logo \includegraphics[width=0.25\linewidth]{Imatges/logo_opticat.png}. I aquesta altra part va despres d'incloure la imatge.
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    Aquest text ve abans d'incloure una imatge del nostre logo \includegraphics[width=0.25\linewidth]{Imatges/logo_opticat.png}. I aquesta altra part va despres d'incloure la imatge.
+\end{tcolorbox}
+Com veiem a l'Exemple \ref{ex:4.7} la imatge es co\lgem oca en una capsa de forma similar a com es co\lgem oca un \texttt{minipage} alineat per la part inferior. L'objecte que inclou la imatge no és un objecte flotant, apraeixerà justament allà on l'haguem cridat al codi i amb la mida que haguem escollit. Com en altres casos, la configuració adicional del comandament \texttt{includegraphics} permet modificar més d'un paràmetre, per tant cal especificar quin és el paràmetre que configurem, co\lgem ocar un igual (el simbol ``='') i la configuració del paràmetre. En el cas de l'Exemple \ref{ex:4.7} el que es modifica és l'amplada de la imatge. Aquesta mida passa de la mida original (que és més ample que el document on escrivim les notes) a una mida equivalent al 25\% del l'amplada de línia del colorbox.\\\\
+Us deixem un llistat amb els paràmetres que podeu modificar d'una imatge amb \texttt{includegraphics}:
+\begin{itemize}
+    \item Modificar mida i escala:
+    \begin{itemize}
+        \item \texttt{width} - Amplada de la imatge
+        \item \texttt{height} - Altura de la imatge\footnote{Aquestes dues opcions permeten modificar la relació d'aspecte original de la imatge. Si només apliquem un d'ells normalment funciona com un reescalament. En cas que es modifiqui la relació d'aspecte, podem posar seguidament d'una coma \texttt{keepaspectratio} per a forçar-la a mantenir-se com la original.}
+        \item \texttt{scale} - Escala respectant la relació d'aspecte original de la imatge.
+    \end{itemize}
+    \item Rotar imatge:
+    \begin{itemize}
+        \item \texttt{angle} - Les unitats són els graus i només cal afegir el número. El sentit de gir és antihorari.
+    \end{itemize}
+    \item Retallar la imatge:
+    \begin{itemize}
+        \item \texttt{trim} + \texttt{clip} - El paràmetre \texttt{trim} emmagatzema les distàncies que es volen retallar i \texttt{clip} fa l'acció de retallar la imatge. L'argument de \texttt{trim} ha de contenir quatre números separats. Aquests números marquen la distància que es retalla (mesurada en punts, \texttt{pt}) de cada banda de la imatge, respectant l'ordre \texttt{left}, \texttt{bottom}, \texttt{right} i \texttt{top}. Posem un exemple de com cridar una imatge retallada:
+        \begin{center}
+            $\backslash$\texttt{includegraphics}[\texttt{trim}= 10 20 10 20, \texttt{clip}, \texttt{width}=$\backslash$\texttt{linewidth}]\{/ruta/document.tex\}
+        \end{center}
+        El que ens mostraria aquest comandament és una imatge que ocupa l'espai de línia disponible i que, respecte a la original que es troba als directoris, aquesta es veu retallada horitzontal i verticalment.
+    \end{itemize}
+\end{itemize}
+Podem posar també un exemple similar a l'Exemple \ref{ex:4.7} però amb els paràmetres modificats:\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    Aquest text ve abans d'incloure una imatge del nostre logo \includegraphics[angle=45,trim= 0 0 200 200, clip, width=0.25\linewidth]{Imatges/logo_opticat.png}. I aquesta altra part va despres d'incloure la imatge.
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    Aquest text ve abans d'incloure una imatge del nostre logo \includegraphics[angle=45,trim= 0 0 200 200, clip, width=0.25\linewidth]{Imatges/logo_opticat.png}. I aquesta altra part va despres d'incloure la imatge.
+\end{tcolorbox}
+Veiem a l'Exemple \ref{ex:4.8} com hem rotat la imatge del nostre logo amb un angle de \(45\,^{\circ}\) i la hem retallat per la part superior i la part dreta uns 200 punts. L'aliniació de la imatge amb el text respecta que la co\lgem ocació sigui respecte al punt més baix de la capsa que conté la imatge. Al estar la imatge rotada podem veure com sembla que la imatge hagi pujat, però això es deu a que es troba aliniada amb el text per l'esquina inferior de la capsa. Com a  darrer comentari d'aquest exemple veiem que el comandament \texttt{trim} retalla respecte els marges de la imatge original. rotar la imatge no crea una nova capsa amb la imatge inclinada, sinó que inclina tota la capsa i la resta de configuracions es fan respecte a l'estat de la capsa actual.\\\\
+Finalment podem mostrar l'exemple que hem comentat al final de la Secció \ref{sec:minipage}. Hi ha llibres on s'acostuma a posar una figura amb un peu de figura i una breu descripció o comentaris a un lateral. Aquest format el podem aplicar de la següent manera:
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    \begin{minipage}{0.5\linewidth}
+        \centering
+        \includegraphics[width=0.75\linewidth]{Imatges/logo_opticat.png}
+        \captionof{figure}{\footnotesize Logo d'Optica't UAB}
+    \end{minipage}
+    \hspace{0.05\linewidth}
+    \begin{minipage}{0.4\linewidth}
+        En aquesta imatge s'observa el logo oficial que fa servir l'Student Chapter Optica't actualment al 2025.
+    \end{minipage}
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    \begin{minipage}{0.5\linewidth}
+        \centering
+        \includegraphics[width=0.75\linewidth]{Imatges/logo_opticat.png}
+        \captionof{figure}{\footnotesize Logo d'Optica't UAB}
+    \end{minipage}
+    \hspace{0.05\linewidth}
+    \begin{minipage}{0.4\linewidth}
+        En aquesta imatge s'observa el logo oficial que fa servir l'Student Chapter Optica't actualment al 2025.
+    \end{minipage}
+\end{tcolorbox}
+L'Exemple \ref{ex:4.9} ens mostra un format útil de presentació d'imatges dins dels nostres documents. És una forma de simular el format de doble columna sense entrar en incompatibilitats innecesàries. Com es pot observar per a afegir un peu de figura fem servir el comandament \texttt{captionof}. Aquest comandament l'expliquem en la següent secció.
+\section{L'entorn \texttt{figure}}
+Ja hem pogut observar a l'inici d'aquestes notes i a la secció anterior com LaTeX permet afegir imatges sense cap problema. Tot i que podem afegir allà on vulguem el comandament \texttt{includegraphics} és interessant conèixer l'entorn \texttt{figure}. Aquest entorn, com ja hem comentat abans, és un entorn flotant que acabarà optimitzant l'espai dins del document per a que hi càpiga la imatge que afegim al seu interior. A part d'això, l'entorn \texttt{figure} permet indexar com a objectes independents a les figures i permet afegir títols a les imatges. La forma  més quotidiana de fer servir un entorn \texttt{figure} és la següent:\\\\
+\exemple{\label{ex:\theexemple}}
+\begin{lstlisting}
+    \begin{figure}[h]
+        \centering
+        \includegraphics{Imatges/logo_opticat.png}
+        \caption{Aixo es un titol de figura (o caption) d'exemple}
+    \end{figure}
+\end{lstlisting}
+\textbf{Sortida:}
+\begin{tcolorbox}[colframe=black, colback=white, sharp corners, width=\textwidth,boxrule=0.2mm,parbox=false]
+    \begin{center}
+        \begin{minipage}{\linewidth}
+            \centering
+            \includegraphics[width=0.25\linewidth]{Imatges/logo_opticat.png}
+            \captionof{figure}{Aixo es un titol de figura (o caption) d'exemple}
+        \end{minipage}
+    \end{center}
+\end{tcolorbox}
+A l'exemple \ref{ex:4.10} podem veure com afegim tres comandaments dins de l'entorn \texttt{figure}. El primer s'encarrega de mantenir al centre els objectes que afegim a dins de l'entorn. El segon crida a la imatge que tenim al directori a partir de la seva ruta d'accés. El tercer genera i co\lgem oca un nou objecte anomenat \texttt{caption}. Aquest objecte identifica que es troba dins d'un entorn \texttt{figure} i explicita la indexació i possible etiquetatge de la figura al document. Podem fer servir referències creuades afegint un \texttt{label} a dins o després de posar el \texttt{caption}. La generació de figures permet crear un llistat que LaTeX emmagatzema com a informació adicional. Podem crear un índex de figures aplicant el el comandament \texttt{listoffigures}, que funciona igual que cridar l'índex de continguts.
+
+\section{Com co\lgem ocar subfigures}
+\section{L'entorn \texttt{table}}
 \chapter{La bibliografia}\label{cap:la_bibliografia}
 \section{L'arxiu \texttt{.bib}}
 \section{Referenciar i imprimir la bibliografia}
 
 \chapter{Personalització avançada}
+\section{Ús d'arxius externs}\label{sec:arxius_externs}
+\subsection{Arxiu externs com a preàmbul (comandament input)}
 \section{Paquets útils}
 \subsection{colorbox}\label{sec:colorboxes}
 \subsection{babel}
@@ -885,4 +1167,7 @@ En canvi, l'entorn \texttt{align} és un entorn matemàtic per si sol, no necess
 \subsection{hyperref}\label{sec:hyperref}
 \subsection{wrapfig}
 \subsection{mhchem}
+
+\bibliographystyle{plain} 
+\bibliography{referencies_Curs_LaTeX.bib}
 \end{document}
